@@ -85,31 +85,130 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Product Modal -->
+    <div id="addProductModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; border-radius: 8px; padding: 2rem; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0; color: #2c3e50;">Add New Product</h2>
+                <button onclick="closeAddProductModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #7f8c8d;">✕</button>
+            </div>
+
+            <form id="addProductForm" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                    <label for="addName" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #2c3e50;">Product Name *</label>
+                    <input type="text" id="addName" name="name" required placeholder="e.g., Laptop" style="width: 100%; padding: 0.75rem; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 0.95rem;">
+                </div>
+
+                <div>
+                    <label for="addCategory" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #2c3e50;">Category *</label>
+                    <input type="text" id="addCategory" name="category" required placeholder="e.g., Electronics" style="width: 100%; padding: 0.75rem; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 0.95rem;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label for="addPrice" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #2c3e50;">Price ($) *</label>
+                        <input type="number" id="addPrice" name="price" required step="0.01" min="0" placeholder="99.99" style="width: 100%; padding: 0.75rem; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 0.95rem;">
+                    </div>
+                    <div>
+                        <label for="addStock" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #2c3e50;">Stock Quantity *</label>
+                        <input type="number" id="addStock" name="stock" required min="0" placeholder="10" style="width: 100%; padding: 0.75rem; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 0.95rem;">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="addDescription" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #2c3e50;">Description</label>
+                    <textarea id="addDescription" name="description" placeholder="Product description..." style="width: 100%; padding: 0.75rem; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 0.95rem; resize: vertical; min-height: 80px;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="button" onclick="closeAddProductModal()" style="flex: 1; padding: 0.75rem; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; font-weight: 600;">Cancel</button>
+                    <button type="submit" style="flex: 2; padding: 0.75rem; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; font-weight: 600;">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
 {/block}
 
 {block name="extra_scripts"}
     <script src="{$base_url}/js/admin.js"></script>
     <script>
+        function openAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'flex';
+        }
+
+        function closeAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'none';
+            document.getElementById('addProductForm').reset();
+        }
+
+        // Close modal when clicking outside of it
+        document.getElementById('addProductModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAddProductModal();
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validation
+            const name = document.getElementById('addName').value.trim();
+            const category = document.getElementById('addCategory').value.trim();
+            const price = parseFloat(document.getElementById('addPrice').value);
+            const stock = parseInt(document.getElementById('addStock').value);
+            const description = document.getElementById('addDescription').value.trim();
+
+            if (!name) {
+                toastr.error('Product name is required');
+                return;
+            }
+
+            if (!category) {
+                toastr.error('Category is required');
+                return;
+            }
+
+            if (isNaN(price) || price <= 0) {
+                toastr.error('Price must be greater than 0');
+                return;
+            }
+
+            if (isNaN(stock) || stock < 0) {
+                toastr.error('Stock must be 0 or greater');
+                return;
+            }
+
+            // Submit form
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('category', category);
+            formData.append('price', price);
+            formData.append('stock', stock);
+            formData.append('description', description);
+
+            fetch('{$base_url}/admin/products/store', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(data.message);
+                    closeAddProductModal();
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    toastr.error(data.message);
+                }
+            })
+            .catch(error => {
+                toastr.error('Error adding product: ' + error.message);
+            });
+        });
+
         function addProduct() {
-            const productName = prompt('Enter product name:');
-            if (!productName) return;
-
-            const price = prompt('Enter price:');
-            if (!price || isNaN(price) || price <= 0) {
-                toastr.error('Invalid price');
-                return;
-            }
-
-            const stock = prompt('Enter stock quantity:');
-            if (!stock || isNaN(stock) || stock < 0) {
-                toastr.error('Invalid stock quantity');
-                return;
-            }
-
-            const category = prompt('Enter category:');
-            
-            // Show a simple message since full form not implemented
-            toastr.info('Add product feature - please use database directly for now. Product: ' + productName);
+            openAddProductModal();
         }
 
         function viewProduct(productId) {

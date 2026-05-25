@@ -136,6 +136,9 @@ try {
     } elseif ($path === '/admin/products' || $path === '/admin/products/') {
         $controller = new \App\Http\Controllers\Admin\ProductController();
         echo $controller->index();
+    } elseif (($path === '/admin/products/store' || $path === '/admin/products/store/') && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller = new \App\Http\Controllers\Admin\ProductController();
+        $controller->store();
     } elseif (preg_match('#^/admin/products/(\d+)(?:/)?$#', $path, $matches)) {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\Admin\ProductController();

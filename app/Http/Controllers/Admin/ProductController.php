@@ -131,6 +131,79 @@ class ProductController extends Controller
         return $smarty->fetch('admin/product-edit.tpl');
     }
 
+    public function store(): void
+    {
+        // Check authentication
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+            exit;
+        }
+
+        header('Content-Type: application/json');
+
+        try {
+            // Get form data
+            $name = $_POST['name'] ?? '';
+            $price = $_POST['price'] ?? 0;
+            $stock = $_POST['stock'] ?? 0;
+            $category = $_POST['category'] ?? '';
+            $description = $_POST['description'] ?? '';
+
+            // Validation
+            if (empty($name)) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Product name is required']);
+                exit;
+            }
+
+            if (empty($category)) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Category is required']);
+                exit;
+            }
+
+            if ($price <= 0) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Price must be greater than 0']);
+                exit;
+            }
+
+            if ($stock < 0) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Stock cannot be negative']);
+                exit;
+            }
+
+            $db = DatabaseService::getInstance();
+
+            // Insert product
+            $db->execute(
+                "INSERT INTO products (name, price, stock, category, description, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())",
+                [$name, $price, $stock, $category, $description]
+            );
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'Product added successfully'
+            ]);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error adding product: ' . $e->getMessage()
+            ]);
+            error_log('Product creation error: ' . $e->getMessage());
+        }
+        exit;
+    }
+
     public function delete(int $id): void
     {
         // Check authentication

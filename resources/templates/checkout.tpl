@@ -129,9 +129,6 @@
                 return;
             }
 
-            // Show payment gateway coming soon message
-            toastr.info('💳 Payment Gateway Coming Soon! Your order will be processed once our secure payment system is live.');
-
             // Disable button to prevent multiple clicks
             const button = event.target;
             button.disabled = true;

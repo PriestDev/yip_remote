@@ -16,6 +16,10 @@
                 <ul class="nav-links">
                     <li><a href="{$base_url}/">Home</a></li>
                     <li><a href="{$base_url}/cart">Cart</a></li>
+                    {if isset($smarty.session.user_id)}
+                        <li><span class="user-name">Hello, {$smarty.session.user_name|default:'User'}</span></li>
+                        <li><a href="{$base_url}/logout" class="logout-btn">Logout</a></li>
+                    {/if}
                 </ul>
             </div>
         </nav>

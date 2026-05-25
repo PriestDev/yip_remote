@@ -58,6 +58,26 @@ header {
     color: #3498db;
 }
 
+.nav-links .user-name {
+    color: #ecf0f1;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    font-size: 0.9rem;
+}
+
+.nav-links .logout-btn {
+    background-color: #e74c3c;
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-links .logout-btn:hover {
+    background-color: #c0392b;
+    color: white !important;
+}
+
 /* Main Content */
 main {
     min-height: calc(100vh - 200px);

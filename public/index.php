@@ -199,6 +199,11 @@ try {
             echo json_encode(['success' => false, 'message' => 'Item not in cart']);
         }
         exit;
+    } elseif ($path === '/logout' || $path === '/logout/') {
+        session_start();
+        session_destroy();
+        header('Location: /yip_remote/public/');
+        exit;
     } elseif (preg_match('#^/product/(\d+)(?:/)?(?:\?.*)?$#', $path, $matches)) {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\HomeController();

@@ -255,11 +255,11 @@
         <aside class="admin-sidebar">
             <h3>Admin Menu</h3>
             <ul class="sidebar-menu">
-                <li><a href="/admin/dashboard" class="active">Dashboard</a></li>
-                <li><a href="/admin/orders">Orders</a></li>
-                <li><a href="/admin/products">Products</a></li>
-                <li><a href="/admin/users">Users</a></li>
-                <li><a href="/admin/settings">Settings</a></li>
+                <li><a href="{$base_url}/admin/dashboard" class="active">Dashboard</a></li>
+                <li><a href="{$base_url}/admin/orders">Orders</a></li>
+                <li><a href="{$base_url}/admin/products">Products</a></li>
+                <li><a href="{$base_url}/admin/users">Users</a></li>
+                <li><a href="{$base_url}/admin/settings">Settings</a></li>
             </ul>
         </aside>
 
@@ -267,7 +267,7 @@
             <div class="dashboard-header">
                 <h1>Dashboard</h1>
                 <div class="user-info">
-                    <p>Welcome, <strong>{$user_name|default:'Admin'}</strong></p>
+                    <p>Welcome, <strong>{if $user_name}{$user_name}{else}Admin{/if}</strong></p>
                     <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
             </div>
@@ -275,19 +275,19 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Orders</h3>
-                    <div class="number">{$total_orders|default:'0'}</div>
+                    <div class="number">{if $total_orders}{$total_orders}{else}0{/if}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Revenue</h3>
-                    <div class="number">${$total_revenue|default:'0'}</div>
+                    <div class="number">${if $total_revenue}{$total_revenue}{else}0{/if}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Customers</h3>
-                    <div class="number">{$total_customers|default:'0'}</div>
+                    <div class="number">{if $total_customers}{$total_customers}{else}0{/if}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Pending Orders</h3>
-                    <div class="number">{$pending_orders|default:'0'}</div>
+                    <div class="number">{if $pending_orders}{$pending_orders}{else}0{/if}</div>
                 </div>
             </div>
 

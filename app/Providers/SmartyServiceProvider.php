@@ -27,6 +27,11 @@ class SmartyServiceProvider
             
             // Set caching
             self::$smarty->setCaching($config['caching']);
+            
+            // Assign dynamic base URL
+            $scriptPath = $_SERVER['SCRIPT_NAME'] ?? '';
+            $baseUrl = dirname($scriptPath); // Removes /index.php, leaves /yip_remote/public (or whatever)
+            self::$smarty->assign('base_url', $baseUrl);
         }
 
         return self::$smarty;

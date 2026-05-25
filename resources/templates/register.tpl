@@ -152,7 +152,7 @@
             <div class="error-message" id="errorMsg"></div>
             <div class="success-message" id="successMsg"></div>
 
-            <form id="registerForm" method="POST" action="/handleRegister">
+            <form id="registerForm" method="POST" action="{$base_url}/handleRegister">
                 <div class="form-group">
                     <label for="fullname">Full Name</label>
                     <input 
@@ -203,7 +203,7 @@
             </form>
 
             <div class="auth-link">
-                Already have an account? <a href="/login">Login here</a>
+                Already have an account? <a href="{$base_url}/login">Login here</a>
             </div>
         </div>
     </div>
@@ -216,7 +216,7 @@
             
             const formData = new FormData(this);
             
-            fetch('/handleRegister', {
+            fetch('{$base_url}/handleRegister', {
                 method: 'POST',
                 body: formData
             })

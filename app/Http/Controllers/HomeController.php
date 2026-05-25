@@ -77,13 +77,14 @@ class HomeController extends Controller
                     'name' => $product->getName(),
                     'price' => $product->getPrice(),
                     'quantity' => $quantity,
-                    'total' => $item_total,
+                    'subtotal' => $item_total,
                     'image' => $product->getImage()
                 ];
             }
         }
 
-        $smarty->assign('cart_items', $products);
+        $smarty->assign('cartItems', $products);
+        $smarty->assign('itemCount', count($products));
         $smarty->assign('total', $total);
         return $smarty->fetch('cart.tpl');
     }

@@ -43,7 +43,7 @@ class AuthController extends Controller
             echo json_encode([
                 'success' => true,
                 'message' => 'Login successful',
-                'redirect' => $user->getRole() === 'admin' ? '/admin/dashboard' : '/'
+                'redirect' => $user->getRole() === 'admin' ? '/yip_remote/public/admin/dashboard' : '/yip_remote/public/'
             ]);
         } else {
             http_response_code(401);
@@ -113,7 +113,7 @@ class AuthController extends Controller
             echo json_encode([
                 'success' => true,
                 'message' => 'Registration successful. Please login.',
-                'redirect' => '/login'
+                'redirect' => '/yip_remote/public/login'
             ]);
         } else {
             http_response_code(500);

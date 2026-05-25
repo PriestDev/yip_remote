@@ -138,7 +138,7 @@
             
             <div class="error-message" id="errorMsg"></div>
 
-            <form id="loginForm" method="POST" action="/handleLogin">
+            <form id="loginForm" method="POST" action="{$base_url}/handleLogin">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input 
@@ -165,7 +165,7 @@
             </form>
 
             <div class="auth-link">
-                Don't have an account? <a href="/register">Register here</a>
+                Don't have an account? <a href="{$base_url}/register">Register here</a>
             </div>
         </div>
     </div>
@@ -178,7 +178,7 @@
             
             const formData = new FormData(this);
             
-            fetch('/handleLogin', {
+            fetch('{$base_url}/handleLogin', {
                 method: 'POST',
                 body: formData
             })

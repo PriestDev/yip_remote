@@ -136,13 +136,13 @@
                     Total: ${$total}
                 </div>
                 <button class="btn-checkout">Proceed to Checkout</button>
-                <a href="/" class="btn-continue">Continue Shopping</a>
+                <a href="{$base_url}/" class="btn-continue">Continue Shopping</a>
             </div>
         {else}
             <div class="empty-cart">
                 <h2>Your cart is empty</h2>
                 <p>You haven't added any items to your cart yet.</p>
-                <a href="/" class="btn-continue">Start Shopping</a>
+                <a href="{$base_url}/" class="btn-continue">Start Shopping</a>
             </div>
         {/if}
     </div>

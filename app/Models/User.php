@@ -6,14 +6,14 @@ use App\Services\DatabaseService;
 
 class User
 {
-    protected $id;
-    protected $name;
-    protected $email;
-    protected $password;
-    protected $role;
-    protected $created_at;
+    protected ?int $id;
+    protected ?string $name;
+    protected ?string $email;
+    protected ?string $password;
+    protected ?string $role;
+    protected ?string $created_at;
 
-    public function __construct($id, $name, $email, $password, $role = 'user', $created_at = null)
+    public function __construct(?int $id, ?string $name, ?string $email, ?string $password, ?string $role = 'user', ?string $created_at = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -23,14 +23,14 @@ class User
         $this->created_at = $created_at;
     }
 
-    public function getId() { return $this->id; }
-    public function getName() { return $this->name; }
-    public function getEmail() { return $this->email; }
-    public function getPassword() { return $this->password; }
-    public function getRole() { return $this->role; }
-    public function getCreatedAt() { return $this->created_at; }
+    public function getId(): ?int { return $this->id; }
+    public function getName(): ?string { return $this->name; }
+    public function getEmail(): ?string { return $this->email; }
+    public function getPassword(): ?string { return $this->password; }
+    public function getRole(): ?string { return $this->role; }
+    public function getCreatedAt(): ?string { return $this->created_at; }
 
-    public static function findByEmail($email)
+    public static function findByEmail(?string $email): ?self
     {
         try {
             $db = DatabaseService::getInstance();
@@ -53,7 +53,7 @@ class User
         }
     }
 
-    public static function find($id)
+    public static function find(?int $id): ?self
     {
         try {
             $db = DatabaseService::getInstance();
@@ -76,7 +76,7 @@ class User
         }
     }
 
-    public static function all()
+    public static function all(): array
     {
         try {
             $db = DatabaseService::getInstance();
@@ -99,7 +99,7 @@ class User
         }
     }
 
-    public function save()
+    public function save(): bool
     {
         try {
             $db = DatabaseService::getInstance();
@@ -121,12 +121,12 @@ class User
         }
     }
 
-    public function verifyPassword($password)
+    public function verifyPassword(?string $password): bool
     {
-        return password_verify($password, $this->password);
+        return password_verify($password ?? '', $this->password ?? '');
     }
 
-    public function delete()
+    public function delete(): bool
     {
         try {
             if (!$this->id) return false;

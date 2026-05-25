@@ -6,15 +6,15 @@ use App\Services\DatabaseService;
 
 class Product
 {
-    protected $id;
-    protected $name;
-    protected $description;
-    protected $category;
-    protected $price;
-    protected $image;
-    protected $stock;
+    protected ?int $id;
+    protected ?string $name;
+    protected ?string $description;
+    protected ?string $category;
+    protected ?float $price;
+    protected ?string $image;
+    protected ?int $stock;
 
-    public function __construct($id, $name, $description, $category, $price, $image, $stock = 0)
+    public function __construct(?int $id, ?string $name, ?string $description, ?string $category, ?float $price, ?string $image, ?int $stock = 0)
     {
         $this->id = $id;
         $this->name = $name;
@@ -25,15 +25,15 @@ class Product
         $this->stock = $stock;
     }
 
-    public function getId() { return $this->id; }
-    public function getName() { return $this->name; }
-    public function getDescription() { return $this->description; }
-    public function getCategory() { return $this->category; }
-    public function getPrice() { return $this->price; }
-    public function getImage() { return $this->image; }
-    public function getStock() { return $this->stock; }
+    public function getId(): ?int { return $this->id; }
+    public function getName(): ?string { return $this->name; }
+    public function getDescription(): ?string { return $this->description; }
+    public function getCategory(): ?string { return $this->category; }
+    public function getPrice(): ?float { return $this->price; }
+    public function getImage(): ?string { return $this->image; }
+    public function getStock(): ?int { return $this->stock; }
 
-    public static function all()
+    public static function all(): array
     {
         try {
             $db = DatabaseService::getInstance();
@@ -58,7 +58,7 @@ class Product
         }
     }
 
-    public static function find($id)
+    public static function find(?int $id): ?self
     {
         try {
             $db = DatabaseService::getInstance();
@@ -82,7 +82,7 @@ class Product
         }
     }
 
-    public function save()
+    public function save(): bool
     {
         try {
             $db = DatabaseService::getInstance();
@@ -104,7 +104,7 @@ class Product
         }
     }
 
-    public function delete()
+    public function delete(): bool
     {
         try {
             if (!$this->id) return false;

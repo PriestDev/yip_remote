@@ -157,15 +157,15 @@
                     <h3>🔧 System Information</h3>
                     <div class="stat">
                         <span class="stat-label">PHP Version</span>
-                        <span class="stat-value" style="font-size: 1rem; color: #666;">{phpversion()}</span>
+                        <span class="stat-value" style="font-size: 1rem; color: #666;">{$system_info['php_version']}</span>
                     </div>
                     <div class="stat">
                         <span class="stat-label">Current Date</span>
-                        <span class="stat-value" style="font-size: 0.95rem; color: #666;">{$smarty.now|date_format:"%Y-%m-%d %H:%M:%S"}</span>
+                        <span class="stat-value" style="font-size: 0.95rem; color: #666;">{$system_info['current_date']}</span>
                     </div>
                     <div class="stat">
                         <span class="stat-label">Database</span>
-                        <span class="stat-value" style="font-size: 0.95rem; color: #666;">MySQL</span>
+                        <span class="stat-value" style="font-size: 0.95rem; color: #666;">{$system_info['database']}</span>
                     </div>
                 </div>
             </div>

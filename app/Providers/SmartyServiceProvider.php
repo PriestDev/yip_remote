@@ -106,6 +106,15 @@ class SmartyServiceProvider
                 return date($phpFormat, $date);
             }
         );
+
+        // phpversion function - gets PHP version
+        self::$smarty->registerPlugin(
+            'function',
+            'phpversion',
+            function() {
+                return phpversion();
+            }
+        );
     }
 }
 

@@ -35,8 +35,16 @@ class SettingsController extends Controller
                 'admin_users' => $adminResult[0]['count'] ?? 0,
             ];
 
+            // System information
+            $systemInfo = [
+                'php_version' => phpversion(),
+                'current_date' => date('Y-m-d H:i:s'),
+                'database' => 'MySQL',
+            ];
+
             $smarty->assign('user_name', $_SESSION['user_name']);
             $smarty->assign('stats', $stats);
+            $smarty->assign('system_info', $systemInfo);
         } catch (\Exception $e) {
             // Assign empty values if database fails
             $smarty->assign('user_name', $_SESSION['user_name']);
@@ -45,6 +53,11 @@ class SettingsController extends Controller
                 'total_products' => 0,
                 'total_users' => 0,
                 'admin_users' => 0,
+            ]);
+            $smarty->assign('system_info', [
+                'php_version' => phpversion(),
+                'current_date' => date('Y-m-d H:i:s'),
+                'database' => 'MySQL',
             ]);
             error_log('Settings retrieval error: ' . $e->getMessage());
         }

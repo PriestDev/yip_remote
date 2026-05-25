@@ -100,7 +100,7 @@
 {block name="content"}
     <section class="product-detail">
         <div class="product-image">
-            <img src="/yip_remote/public/images/{$product.image}" alt="{$product.name}">
+            <img src="{$base_url}/images/{$product.image}" alt="{$product.name}">
         </div>
         <div class="product-info">
             <p class="category"><strong>Category:</strong> {$product.category}</p>

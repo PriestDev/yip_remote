@@ -1,23 +1,23 @@
 {extends file="layout.tpl"}
 
-{block name="title"}Fresh Fruit Market - E-Commerce Store{/block}
+{block name="title"}Electronics Store - Premium Tech Products{/block}
 
 {block name="content"}
     <section class="hero">
-        <h2>Welcome to Fresh Fruit Market</h2>
-        <p>Discover premium quality fresh fruits at competitive prices - Powered by Smarty Templates</p>
+        <h2>Welcome to Our Electronics Store</h2>
+        <p>Discover premium quality tech products at competitive prices - Powered by Database-Driven Architecture</p>
     </section>
 
     <section class="products">
-        <h3>Featured Fruits</h3>
+        <h3>Featured Products</h3>
         <div class="product-grid">
             {foreach from=$products item=product}
             <div class="product-card">
-                <img src="/yip_remote/public/images/{$product.image}" alt="{$product.name}">
+                <img src="{$base_url}/images/{$product.image}" alt="{$product.name}">
                 <p class="category">{$product.category}</p>
                 <h4>{$product.name}</h4>
                 <p class="price">${$product.price}</p>
-                <a href="/yip_remote/public/product/{$product.id}" class="btn-product-link">View Details</a>
+                <a href="{$base_url}/product/{$product.id}" class="btn-product-link">View Details</a>
                 <button class="btn-add-cart" onclick="addToCart({$product.id}, '{$product.name}')">Add to Cart</button>
             </div>
             {/foreach}

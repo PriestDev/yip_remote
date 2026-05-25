@@ -211,6 +211,14 @@
 
 {block name="extra_scripts"}
     <script>
+        // Configure Toastr
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "5000"
+        };
+
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -223,32 +231,17 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showSuccess(data.message);
+                    toastr.success(data.message);
                     setTimeout(() => {
                         window.location.href = data.redirect || '/login';
-                    }, 2000);
+                    }, 1500);
                 } else {
-                    showError(data.message || 'Registration failed');
+                    toastr.error(data.message || 'Registration failed');
                 }
             })
             .catch(error => {
-                showError('An error occurred. Please try again.');
+                toastr.error('An error occurred. Please try again.');
             });
         });
-
-        function showError(msg) {
-            const errorDiv = document.getElementById('errorMsg');
-            errorDiv.textContent = msg;
-            errorDiv.classList.add('show');
-            setTimeout(() => {
-                errorDiv.classList.remove('show');
-            }, 5000);
-        }
-
-        function showSuccess(msg) {
-            const successDiv = document.getElementById('successMsg');
-            successDiv.textContent = msg;
-            successDiv.classList.add('show');
-        }
     </script>
 {/block}

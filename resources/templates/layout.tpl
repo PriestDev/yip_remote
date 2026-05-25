@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{block name="title"}E-Commerce Store{/block}</title>
     <link rel="stylesheet" href="/yip_remote/public/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     {block name="extra_css"}{/block}
 </head>
 <body>
@@ -28,6 +29,7 @@
         <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     {block name="extra_scripts"}{/block}
 </body>
 </html>

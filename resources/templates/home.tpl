@@ -27,26 +27,55 @@
 
 {block name="extra_scripts"}
     <script>
+        const isAuthenticated = {if $user_id}true{else}false{/if};
+        const userRole = '{if $user_role}{$user_role}{else}guest{/if}';
+        const baseUrl = '{$base_url}';
+        
+{literal}
         function addToCart(productId, productName) {
-            fetch('/yip_remote/public/api/cart/add', {
+            // Check if user is authenticated
+            if (!isAuthenticated) {
+                toastr.warning('Please sign in to add items to cart');
+                setTimeout(() => {
+                    window.location.href = baseUrl + '/register';
+                }, 1500);
+                return;
+            }
+
+            // Check if user is admin
+            if (userRole === 'admin') {
+                toastr.error('Administrators cannot add products to cart');
+                return;
+            }
+
+            // Add to cart via API
+            fetch(baseUrl + '/api/cart/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({literal}{ {id: productId}{/literal})
+                body: JSON.stringify({id: productId})
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert(productName + ' added to cart!');
+                    toastr.success(productName + ' added to cart!');
                 } else {
-                    alert('Error: ' + data.message);
+                    if (data.redirect) {
+                        toastr.warning(data.message);
+                        setTimeout(() => {
+                            window.location.href = data.redirect;
+                        }, 1500);
+                    } else {
+                        toastr.error(data.message);
+                    }
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Failed to add item to cart');
+                toastr.error('Failed to add item to cart');
             });
         }
+{/literal}
     </script>
 {/block}

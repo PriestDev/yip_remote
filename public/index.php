@@ -173,22 +173,8 @@ try {
         $controller = new \App\Http\Controllers\HomeController();
         echo $controller->cart();
     } elseif ($path === '/api/cart/add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Handle adding to cart
-        header('Content-Type: application/json');
-        $data = json_decode(file_get_contents('php://input'), true);
-        $id = isset($data['id']) ? (int)$data['id'] : 0;
-        
-        if ($id > 0) {
-            if (!isset($_SESSION['cart'])) {
-                $_SESSION['cart'] = [];
-            }
-            $_SESSION['cart'][$id] = ($_SESSION['cart'][$id] ?? 0) + 1;
-            echo json_encode(['success' => true, 'message' => 'Item added to cart']);
-        } else {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Invalid product ID']);
-        }
-        exit;
+        $controller = new \App\Http\Controllers\CartController();
+        $controller->add();
     } elseif ($path === '/api/cart/remove' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         // Handle removing from cart
         header('Content-Type: application/json');

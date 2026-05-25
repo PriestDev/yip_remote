@@ -109,8 +109,8 @@
             <p class="description">{$product.description}</p>
             <p class="product-id"><strong>Product ID:</strong> {$product.id}</p>
             <div class="product-actions">
-                <button class="btn-add-cart-large" onclick="addToCart({$product.id})">Add to Cart</button>
-                <a href="/yip_remote/public/" class="btn-back">Back to Home</a>
+                <button class="btn-add-cart-large" onclick="addToCart({$product.id}, '{$product.name}')">Add to Cart</button>
+                <a href="{$base_url}/" class="btn-back">Back to Home</a>
             </div>
         </div>
     </section>
@@ -123,8 +123,55 @@
 
 {block name="extra_scripts"}
     <script>
-        function addToCart(productId) {
-            alert('Product ' + productId + ' added to cart!');
+        const isAuthenticated = {if $user_id}true{else}false{/if};
+        const userRole = '{if $user_role}{$user_role}{else}guest{/if}';
+        const baseUrl = '{$base_url}';
+        
+{literal}
+        function addToCart(productId, productName) {
+            // Check if user is authenticated
+            if (!isAuthenticated) {
+                toastr.warning('Please sign in to add items to cart');
+                setTimeout(() => {
+                    window.location.href = baseUrl + '/register';
+                }, 1500);
+                return;
+            }
+
+            // Check if user is admin
+            if (userRole === 'admin') {
+                toastr.error('Administrators cannot add products to cart');
+                return;
+            }
+
+            // Add to cart via API
+            fetch(baseUrl + '/api/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: productId})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(productName + ' added to cart!');
+                } else {
+                    if (data.redirect) {
+                        toastr.warning(data.message);
+                        setTimeout(() => {
+                            window.location.href = data.redirect;
+                        }, 1500);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                toastr.error('Failed to add item to cart');
+            });
         }
+{/literal}
     </script>
 {/block}

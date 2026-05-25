@@ -29,7 +29,12 @@ class HomeController extends Controller
             ];
         }
 
+        $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+        $smarty->assign('base_url', $baseUrl);
         $smarty->assign('products', $products);
+        $smarty->assign('user_id', $_SESSION['user_id'] ?? null);
+        $smarty->assign('user_role', $_SESSION['user_role'] ?? null);
+        $smarty->assign('user_name', $_SESSION['user_name'] ?? null);
         return $smarty->fetch('home.tpl');
     }
 
@@ -55,7 +60,12 @@ class HomeController extends Controller
             'stock' => $productObj->getStock()
         ];
 
+        $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+        $smarty->assign('base_url', $baseUrl);
         $smarty->assign('product', $product);
+        $smarty->assign('user_id', $_SESSION['user_id'] ?? null);
+        $smarty->assign('user_role', $_SESSION['user_role'] ?? null);
+        $smarty->assign('user_name', $_SESSION['user_name'] ?? null);
         return $smarty->fetch('product.tpl');
     }
 

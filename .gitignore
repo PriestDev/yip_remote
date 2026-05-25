@@ -1,0 +1,13 @@
+/vendor/
+.env
+.env.local
+.env.*.local
+node_modules/
+/resources/templates_c/*
+!/resources/templates_c/.gitkeep
+.DS_Store
+Thumbs.db
+*.log
+/storage/logs/*
+.vscode/settings.json
+.idea/

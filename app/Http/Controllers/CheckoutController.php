@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\DatabaseService;
 use Exception;
 
 class CheckoutController extends Controller
@@ -109,10 +110,16 @@ class CheckoutController extends Controller
             }
 
             // Create order
-            $order = new Order();
-            $order->setUserId($userId);
-            $order->setTotal($totalAmount);
-            $order->setStatus('pending');
+            $order = new Order(
+                null, // id will be auto-generated
+                $userId, // user_id
+                null, // order_number will be generated in save()
+                $totalAmount, // total
+                'pending', // status
+                date('Y-m-d H:i:s'), // created_at
+                [], // items (empty, will be added separately)
+                $_SESSION['user_name'] ?? 'Customer' // customer_name
+            );
             $order->save();
 
             $orderId = $order->getId();
@@ -122,21 +129,18 @@ class CheckoutController extends Controller
                 $product = Product::find($productId);
                 
                 // Insert order item
-                $database = \App\Providers\DatabaseServiceProvider::getDatabase();
-                $stmt = $database->prepare(
-                    'INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)'
+                $database = DatabaseService::getInstance();
+                $database->execute(
+                    'INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)',
+                    [$orderId, $productId, $quantity, $product->getPrice()]
                 );
-                $stmt->bind_param('iiii', $orderId, $productId, $quantity, $price);
-                $price = $product->getPrice();
-                $stmt->execute();
 
                 // Update product stock
                 $newStock = $product->getStock() - $quantity;
-                $updateStmt = $database->prepare(
-                    'UPDATE products SET stock = ? WHERE id = ?'
+                $database->execute(
+                    'UPDATE products SET stock = ? WHERE id = ?',
+                    [$newStock, $productId]
                 );
-                $updateStmt->bind_param('ii', $newStock, $productId);
-                $updateStmt->execute();
             }
 
             // Clear the cart
@@ -173,20 +177,13 @@ class CheckoutController extends Controller
         }
 
         // Fetch order items
-        $database = \App\Providers\DatabaseServiceProvider::getDatabase();
-        $stmt = $database->prepare(
+        $database = DatabaseService::getInstance();
+        $items = $database->query(
             'SELECT oi.*, p.name FROM order_items oi 
              JOIN products p ON oi.product_id = p.id 
-             WHERE oi.order_id = ?'
+             WHERE oi.order_id = ?',
+            [$id]
         );
-        $stmt->bind_param('i', $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $items = [];
-        while ($row = $result->fetch_assoc()) {
-            $items[] = $row;
-        }
 
         $smarty = \App\Providers\SmartyServiceProvider::getSmarty();
         $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
@@ -198,3 +195,4 @@ class CheckoutController extends Controller
         
         return $smarty->fetch('order-confirmation.tpl');
     }
+}

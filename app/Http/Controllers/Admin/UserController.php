@@ -61,10 +61,15 @@ class UserController extends Controller
 
             if (!$user) {
                 http_response_code(404);
+                $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+                $smarty->assign('base_url', $baseUrl);
+                $smarty->assign('user_name', $_SESSION['user_name']);
                 $smarty->assign('error', 'User not found');
-                return $smarty->fetch('admin/users.tpl');
+                return $smarty->fetch('admin/user-detail.tpl');
             }
 
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            $smarty->assign('base_url', $baseUrl);
             $smarty->assign('user_name', $_SESSION['user_name']);
             $smarty->assign('user', [
                 'id' => $user->getId(),
@@ -74,11 +79,14 @@ class UserController extends Controller
                 'created_at' => $user->getCreatedAt(),
             ]);
         } catch (\Exception $e) {
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            $smarty->assign('base_url', $baseUrl);
             $smarty->assign('user_name', $_SESSION['user_name']);
+            $smarty->assign('error', 'Error loading user: ' . $e->getMessage());
             error_log('User detail error: ' . $e->getMessage());
         }
 
-        return $smarty->fetch('admin/users.tpl');
+        return $smarty->fetch('admin/user-detail.tpl');
     }
 
     public function delete(int $id): void

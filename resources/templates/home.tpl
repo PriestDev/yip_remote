@@ -13,7 +13,7 @@
         <div class="product-grid">
             {foreach from=$products item=product}
             <div class="product-card">
-                <img src="{$base_url}/images/{$product.image}" alt="{$product.name}">
+                <img src="{$base_url}/images/{$product.image}" alt="{$product.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23e0e0e0%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2214%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22%3EImage not available%3C/text%3E%3C/svg%3E'">
                 <p class="category">{$product.category}</p>
                 <h4>{$product.name}</h4>
                 <p class="price">${$product.price}</p>

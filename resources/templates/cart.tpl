@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - E-Commerce Store</title>
-    <link rel="stylesheet" href="/yip_remote/public/css/style.css">
+{extends file="layout.tpl"}
+
+{block name="title"}Shopping Cart - E-Commerce Store{/block}
+
+{block name="extra_css"}
     <style>
         .cart-container {
             max-width: 900px;
@@ -105,23 +103,10 @@
             }
         }
     </style>
-</head>
-<body>
-    <header>
-        <nav class="navbar">
-            <div class="container">
-                <h1 class="logo">E-Store</h1>
-                <ul class="nav-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/products">Products</a></li>
-                    <li><a href="/cart">Cart</a></li>
-                    <li><a href="/about">About</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+{/block}
 
-    <main class="cart-container">
+{block name="content"}
+    <div class="cart-container">
         <h1>Shopping Cart</h1>
 
         {if $itemCount > 0}
@@ -160,15 +145,5 @@
                 <a href="/" class="btn-continue">Start Shopping</a>
             </div>
         {/if}
-    </main>
-
-    <footer>
-        <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
-    </footer>
-
-    <script>
-        // Note: In a real application, you would handle cart operations with proper backend integration
-        // This is a basic implementation using session storage
-    </script>
-</body>
-</html>
+    </div>
+{/block}

@@ -1,7 +1,0 @@
-<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="200" fill="#f0f0f0"/>
-  <circle cx="100" cy="110" r="50" fill="#dc143c"/>
-  <path d="M 100 60 Q 105 50, 100 40" stroke="#8b6914" stroke-width="2" fill="none"/>
-  <ellipse cx="85" cy="90" rx="8" ry="12" fill="#228b22"/>
-  <text x="100" y="170" font-size="16" text-anchor="middle" fill="#333">Fresh Apple</text>
-</svg>

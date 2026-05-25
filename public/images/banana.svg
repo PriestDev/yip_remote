@@ -1,7 +1,0 @@
-<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="200" fill="#f0f0f0"/>
-  <ellipse cx="100" cy="100" rx="30" ry="50" fill="#ffd700"/>
-  <ellipse cx="80" cy="85" rx="28" ry="48" fill="#ffed4e"/>
-  <path d="M 100 45 Q 105 35, 100 30" stroke="#8b6914" stroke-width="2" fill="none"/>
-  <text x="100" y="170" font-size="14" text-anchor="middle" fill="#333">Bananas</text>
-</svg>

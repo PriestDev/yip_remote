@@ -6,6 +6,7 @@
     <style>
         .admin-layout {
             display: flex;
+            flex-direction: row;
             min-height: calc(100vh - 100px);
         }
 
@@ -14,11 +15,8 @@
             color: white;
             padding: 1.5rem;
             width: 250px;
-            height: calc(100vh - 100px);
+            min-height: 100%;
             overflow-y: auto;
-            position: fixed;
-            left: 0;
-            top: 100px;
         }
 
         .admin-sidebar h3 {
@@ -49,11 +47,10 @@
         }
 
         .admin-content {
-            margin-left: 250px;
+            flex: 1;
             padding: 2rem;
             background-color: #f5f5f5;
-            min-height: calc(100vh - 100px);
-            flex: 1;
+            overflow-y: auto;
         }
 
         .dashboard-header {
@@ -143,23 +140,18 @@
             padding-bottom: 0.5rem;
         }
 
-        /* Tablet Responsiveness */
-        @media (max-width: 1200px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
         /* Mobile Responsiveness */
         @media (max-width: 1024px) {
+            .admin-layout {
+                flex-direction: column;
+            }
+
             .admin-sidebar {
-                position: static;
                 width: 100%;
-                height: auto;
+                min-height: auto;
             }
 
             .admin-content {
-                margin-left: 0;
                 padding: 1.5rem;
             }
 
@@ -184,10 +176,6 @@
         }
 
         @media (max-width: 768px) {
-            .admin-sidebar {
-                width: 100%;
-            }
-
             .admin-content {
                 padding: 1rem;
             }

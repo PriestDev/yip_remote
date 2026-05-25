@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Providers\SmartyServiceProvider;
 use App\Models\Product;
+use Exception;
 
 class HomeController extends Controller
 {

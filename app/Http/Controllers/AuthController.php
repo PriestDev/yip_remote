@@ -128,11 +128,12 @@ class AuthController extends Controller
         exit;
     }
 
-    public function logout(): void
+    public function logout(): string
     {
         session_destroy();
         $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
         header('Location: ' . $baseUrl . '/');
         exit;
+        return ''; // Unreachable but satisfies return type
     }
 }

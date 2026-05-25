@@ -118,7 +118,7 @@ try {
         $controller->handleRegister();
     } elseif ($path === '/logout' || $path === '/logout/') {
         $controller = new \App\Http\Controllers\AuthController();
-        echo $controller->logout();
+        $controller->logout();
     } elseif ($path === '/admin/dashboard' || $path === '/admin/dashboard/') {
         $controller = new \App\Http\Controllers\Admin\DashboardController();
         echo $controller->index();

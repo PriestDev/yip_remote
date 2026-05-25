@@ -29,13 +29,20 @@ class CartController extends Controller
             exit;
         }
 
-        // Get product ID from request
+        // Get product ID and quantity from request
         $data = json_decode(file_get_contents('php://input'), true);
         $id = isset($data['id']) ? (int)$data['id'] : 0;
+        $quantity = isset($data['quantity']) ? (int)$data['quantity'] : 1;
 
         if ($id <= 0) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'Invalid product ID']);
+            exit;
+        }
+
+        if ($quantity < 1) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Quantity must be at least 1']);
             exit;
         }
 
@@ -44,8 +51,8 @@ class CartController extends Controller
             $_SESSION['cart'] = [];
         }
 
-        // Add product to cart
-        $_SESSION['cart'][$id] = ($_SESSION['cart'][$id] ?? 0) + 1;
+        // Add product to cart with quantity
+        $_SESSION['cart'][$id] = ($_SESSION['cart'][$id] ?? 0) + $quantity;
 
         echo json_encode([
             'success' => true,

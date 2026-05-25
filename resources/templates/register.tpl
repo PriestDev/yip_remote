@@ -152,7 +152,7 @@
             <div class="error-message" id="errorMsg"></div>
             <div class="success-message" id="successMsg"></div>
 
-            <form id="registerForm">
+            <form id="registerForm" method="POST" action="/handleRegister">
                 <div class="form-group">
                     <label for="fullname">Full Name</label>
                     <input 
@@ -192,7 +192,7 @@
                     <input 
                         type="password" 
                         id="confirm-password" 
-                        name="confirm-password" 
+                        name="confirm_password" 
                         placeholder="Confirm your password"
                         required
                         minlength="6"
@@ -214,42 +214,35 @@
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const fullname = document.getElementById('fullname').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
+            const formData = new FormData(this);
             
-            // Validation
-            if (!fullname || !email || !password || !confirmPassword) {
-                showError('Please fill in all fields');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                showError('Passwords do not match');
-                return;
-            }
-
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters');
-                return;
-            }
-
-            // Store user data
-            localStorage.setItem('userName', fullname);
-            localStorage.setItem('userEmail', email);
-            localStorage.setItem('isLoggedIn', 'true');
-            
-            showSuccess('Registration successful! Redirecting to login...');
-            setTimeout(() => {
-                window.location.href = '/login';
-            }, 2000);
+            fetch('/handleRegister', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccess(data.message);
+                    setTimeout(() => {
+                        window.location.href = data.redirect || '/login';
+                    }, 2000);
+                } else {
+                    showError(data.message || 'Registration failed');
+                }
+            })
+            .catch(error => {
+                showError('An error occurred. Please try again.');
+            });
         });
 
         function showError(msg) {
             const errorDiv = document.getElementById('errorMsg');
             errorDiv.textContent = msg;
             errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
         }
 
         function showSuccess(msg) {

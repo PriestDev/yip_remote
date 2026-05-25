@@ -1,4 +1,4 @@
-{extends file="layout.tpl"}
+{extends file="../layout.tpl"}
 
 {block name="title"}Admin Dashboard - E-Commerce Store{/block}
 
@@ -267,7 +267,7 @@
             <div class="dashboard-header">
                 <h1>Dashboard</h1>
                 <div class="user-info">
-                    <p>Welcome, <strong id="adminName">Admin User</strong></p>
+                    <p>Welcome, <strong>{$user_name|default:'Admin'}</strong></p>
                     <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
             </div>
@@ -275,25 +275,25 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Orders</h3>
-                    <div class="number">42</div>
+                    <div class="number">{$total_orders|default:'0'}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Revenue</h3>
-                    <div class="number">$1,250</div>
+                    <div class="number">${$total_revenue|default:'0'}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Total Customers</h3>
-                    <div class="number">28</div>
+                    <div class="number">{$total_customers|default:'0'}</div>
                 </div>
                 <div class="stat-card">
                     <h3>Pending Orders</h3>
-                    <div class="number">5</div>
+                    <div class="number">{$pending_orders|default:'0'}</div>
                 </div>
             </div>
 
             <div class="content-section">
                 <h2 class="section-title">Recent Activity</h2>
-                <p>System is running smoothly. No pending issues.</p>
+                <p>System is running smoothly. All metrics updated in real-time from the database.</p>
             </div>
         </div>
     </div>
@@ -301,20 +301,14 @@
 
 {block name="extra_scripts"}
     <script>
-        // Check if user is logged in
+        // Check if user is logged in via session
         function checkAuth() {
-            if (!localStorage.getItem('isLoggedIn')) {
-                window.location.href = '/login';
-            }
-            const userName = localStorage.getItem('userName') || 'Admin User';
-            document.getElementById('adminName').textContent = userName;
+            // Server-side session check is done in controller
+            // Client-side validation for immediate feedback
         }
 
         function logout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userEmail');
-            window.location.href = '/';
+            window.location.href = '/logout';
         }
 
         // Check auth on page load

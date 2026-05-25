@@ -138,7 +138,7 @@
             
             <div class="error-message" id="errorMsg"></div>
 
-            <form id="loginForm">
+            <form id="loginForm" method="POST" action="/handleLogin">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input 
@@ -175,20 +175,25 @@
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
             
-            // Basic validation
-            if (!email || !password) {
-                showError('Please fill in all fields');
-                return;
-            }
-
-            // For now, just redirect to admin dashboard
-            // In production, this would authenticate with backend
-            localStorage.setItem('userEmail', email);
-            localStorage.setItem('isLoggedIn', 'true');
-            window.location.href = '/admin/dashboard';
+            const formData = new FormData(this);
+            
+            fetch('/handleLogin', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect on success
+                    window.location.href = data.redirect || '/';
+                } else {
+                    showError(data.message || 'Login failed');
+                }
+            })
+            .catch(error => {
+                showError('An error occurred. Please try again.');
+            });
         });
 
         function showError(msg) {

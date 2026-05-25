@@ -69,6 +69,19 @@ function public_path($path = '') {
 
 /*
 |--------------------------------------------------------------------------
+| Initialize Database
+|--------------------------------------------------------------------------
+*/
+
+try {
+    \App\Helpers\DatabaseSetup::setupDatabase();
+} catch (\Exception $e) {
+    // Database setup will be handled gracefully
+    error_log('Database setup warning: ' . $e->getMessage());
+}
+
+/*
+|--------------------------------------------------------------------------
 | Route The Request
 |--------------------------------------------------------------------------
 */
@@ -97,6 +110,12 @@ try {
     } elseif ($path === '/register' || $path === '/register/') {
         $controller = new \App\Http\Controllers\AuthController();
         echo $controller->register();
+    } elseif ($path === '/handleLogin' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller = new \App\Http\Controllers\AuthController();
+        $controller->handleLogin();
+    } elseif ($path === '/handleRegister' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller = new \App\Http\Controllers\AuthController();
+        $controller->handleRegister();
     } elseif ($path === '/logout' || $path === '/logout/') {
         $controller = new \App\Http\Controllers\AuthController();
         echo $controller->logout();

@@ -1,4 +1,4 @@
-{extends file="layout.tpl"}
+{extends file="../layout.tpl"}
 
 {block name="title"}Manage Orders - Admin Dashboard{/block}
 
@@ -211,6 +211,12 @@
             background-color: #c0392b;
         }
 
+        .no-orders {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+        }
+
         /* Mobile Responsiveness */
         @media (max-width: 1024px) {
             .admin-layout {
@@ -367,79 +373,48 @@
             <div class="dashboard-header">
                 <h1>Manage Orders</h1>
                 <div class="user-info">
-                    <p>Welcome, <strong id="adminName">Admin User</strong></p>
+                    <p>Welcome, <strong>{$user_name|default:'Admin'}</strong></p>
                     <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
             </div>
 
             <div class="content-section">
                 <h2 class="section-title">Orders List</h2>
-                <table class="orders-table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#ORD-001</td>
-                            <td>John Doe</td>
-                            <td>$24.99</td>
-                            <td><span class="status-badge status-completed">Completed</span></td>
-                            <td>2026-05-20</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-small btn-view">View</button>
-                                    <button class="btn-small btn-edit">Edit</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-002</td>
-                            <td>Jane Smith</td>
-                            <td>$15.99</td>
-                            <td><span class="status-badge status-processing">Processing</span></td>
-                            <td>2026-05-22</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-small btn-view">View</button>
-                                    <button class="btn-small btn-edit">Edit</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-003</td>
-                            <td>Mike Johnson</td>
-                            <td>$32.50</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>2026-05-23</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-small btn-view">View</button>
-                                    <button class="btn-small btn-edit">Edit</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-004</td>
-                            <td>Sarah Williams</td>
-                            <td>$45.99</td>
-                            <td><span class="status-badge status-completed">Completed</span></td>
-                            <td>2026-05-21</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-small btn-view">View</button>
-                                    <button class="btn-small btn-edit">Edit</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                {if count($orders) > 0}
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach from=$orders item=order}
+                                <tr>
+                                    <td>#{$order['order_number']}</td>
+                                    <td>{$order['customer_name']|default:'Guest'}</td>
+                                    <td>${$order['total']|number_format:2}</td>
+                                    <td><span class="status-badge status-{$order['status']}">{ucfirst($order['status'])}</span></td>
+                                    <td>{$order['created_at']|date_format:"%Y-%m-%d"}</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-small btn-view" onclick="viewOrder({$order['id']})">View</button>
+                                            <button class="btn-small btn-edit" onclick="editOrder({$order['id']})">Edit</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                {else}
+                    <div class="no-orders">
+                        <p>No orders found. System is ready for first orders.</p>
+                    </div>
+                {/if}
             </div>
         </div>
     </div>
@@ -447,23 +422,16 @@
 
 {block name="extra_scripts"}
     <script>
-        // Check if user is logged in
-        function checkAuth() {
-            if (!localStorage.getItem('isLoggedIn')) {
-                window.location.href = '/login';
-            }
-            const userName = localStorage.getItem('userName') || 'Admin User';
-            document.getElementById('adminName').textContent = userName;
-        }
-
         function logout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userEmail');
-            window.location.href = '/';
+            window.location.href = '/logout';
         }
 
-        // Check auth on page load
-        window.addEventListener('load', checkAuth);
+        function viewOrder(orderId) {
+            alert('View order ' + orderId + ' - Feature coming soon');
+        }
+
+        function editOrder(orderId) {
+            alert('Edit order ' + orderId + ' - Feature coming soon');
+        }
     </script>
 {/block}

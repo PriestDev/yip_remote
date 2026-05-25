@@ -83,22 +83,22 @@ $path = $path ?: '/';
 
 // Simple router
 try {
-    if ($path === '/' || $path === '') {
+    if ($path === '/' || $path === '' || $path === '/yip_remote/public/') {
         $controller = new \App\Http\Controllers\HomeController();
         echo $controller->index();
-    } elseif (preg_match('#^/product/(\d+)#', $path, $matches)) {
+    } elseif (preg_match('#^/product/(\d+)(?:/)?(?:\?.*)?$#', $path, $matches)) {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\HomeController();
         echo $controller->show($id);
     } else {
         http_response_code(404);
         echo '<h1>404 - Page Not Found</h1>';
+        echo '<p>Requested path: ' . htmlspecialchars($path) . '</p>';
     }
 } catch (Exception $e) {
-    http_response_code(500);
-    echo '<pre>';
-    echo htmlspecialchars($e->getMessage());
-    echo '</pre>';
+    http_response_code(404);
+    echo '<h1>Error</h1>';
+    echo '<p>' . htmlspecialchars($e->getMessage()) . '</p>';
 }
 
 

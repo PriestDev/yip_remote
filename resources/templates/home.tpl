@@ -23,19 +23,20 @@
 
     <main class="container">
         <section class="hero">
-            <h2>Welcome to Our Store</h2>
-            <p>Discover amazing products at great prices - Powered by Smarty Templates</p>
+            <h2>Welcome to Fresh Fruit Market</h2>
+            <p>Discover premium quality fresh fruits at competitive prices - Powered by Smarty Templates</p>
         </section>
 
         <section class="products">
-            <h3>Featured Products</h3>
+            <h3>Featured Fruits</h3>
             <div class="product-grid">
                 {foreach from=$products item=product}
                 <div class="product-card">
-                    <img src="/images/{$product.image}" alt="{$product.name}">
+                    <img src="/yip_remote/public/images/{$product.image}" alt="{$product.name}">
+                    <p class="category">{$product.category}</p>
                     <h4>{$product.name}</h4>
                     <p class="price">${$product.price}</p>
-                    <a href="/product/{$product.id}" class="btn-product-link">View Details</a>
+                    <a href="/yip_remote/public/product/{$product.id}" class="btn-product-link">View Details</a>
                     <button class="btn-add-cart" onclick="addToCart({$product.id})">Add to Cart</button>
                 </div>
                 {/foreach}

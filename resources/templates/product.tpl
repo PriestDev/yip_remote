@@ -23,16 +23,17 @@
     <main class="container">
         <section class="product-detail">
             <div class="product-image">
-                <img src="/images/{$product.image}" alt="{$product.name}">
+                <img src="/yip_remote/public/images/{$product.image}" alt="{$product.name}">
             </div>
             <div class="product-info">
+                <p class="category"><strong>Category:</strong> {$product.category}</p>
                 <h2>{$product.name}</h2>
                 <p class="price">${$product.price}</p>
                 <p class="description">{$product.description}</p>
                 <p class="product-id"><strong>Product ID:</strong> {$product.id}</p>
                 <div class="product-actions">
                     <button class="btn-add-cart-large" onclick="addToCart({$product.id})">Add to Cart</button>
-                    <a href="/" class="btn-back">Back to Home</a>
+                    <a href="/yip_remote/public/" class="btn-back">Back to Home</a>
                 </div>
             </div>
         </section>

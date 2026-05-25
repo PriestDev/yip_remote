@@ -43,7 +43,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
+        <p>&copy; 2026 E-Commerce Store by Priest (Francis). All rights reserved.</p>
     </footer>
 </body>
 </html>

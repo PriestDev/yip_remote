@@ -20,7 +20,7 @@
                     </div>
                     <div class="order-info-row">
                         <span class="label">Order Date:</span>
-                        <span class="value">{$order->getCreatedAt()|strtotime|date_format:"%B %d, %Y %I:%M %p"}</span>
+                        <span class="value">{$order->getCreatedAt()}</span>
                     </div>
                     <div class="order-info-row">
                         <span class="label">Order Status:</span>

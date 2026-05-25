@@ -140,6 +140,10 @@ try {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\Admin\ProductController();
         echo $controller->show($id);
+    } elseif (preg_match('#^/admin/products/(\d+)/edit(?:/)?$#', $path, $matches)) {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\Admin\ProductController();
+        echo $controller->editForm($id);
     } elseif (preg_match('#^/admin/products/(\d+)/delete(?:/)?$#', $path, $matches) && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\Admin\ProductController();

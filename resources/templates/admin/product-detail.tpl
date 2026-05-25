@@ -212,7 +212,7 @@
 
                             <div class="action-buttons">
                                 <button class="btn-back" onclick="window.history.back()">← Back</button>
-                                <button class="btn-edit" onclick="editProduct({$product.id})">✎ Edit Product</button>
+                                <button class="btn-edit" onclick="window.location.href='{$base_url}/admin/products/{$product.id}/edit'">✎ Edit Product</button>
                                 <button class="btn-delete" onclick="deleteProduct({$product.id})">✕ Delete Product</button>
                             </div>
                         </div>
@@ -230,48 +230,6 @@
 {block name="extra_scripts"}
     <script src="{$base_url}/js/admin.js"></script>
     <script>
-        function editProduct(productId) {
-            const newName = prompt('Enter new product name:');
-            if (!newName) return;
-
-            const newPrice = prompt('Enter new price:');
-            if (!newPrice || isNaN(newPrice) || newPrice <= 0) {
-                toastr.error('Invalid price');
-                return;
-            }
-
-            const newStock = prompt('Enter new stock quantity:');
-            if (!newStock || isNaN(newStock) || newStock < 0) {
-                toastr.error('Invalid stock quantity');
-                return;
-            }
-
-            const newCategory = prompt('Enter new category:');
-
-            const formData = new FormData();
-            formData.append('name', newName);
-            formData.append('price', newPrice);
-            formData.append('stock', newStock);
-            formData.append('category', newCategory);
-
-            fetch('{$base_url}/admin/products/' + productId + '/update', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    toastr.success(data.message);
-                    setTimeout(() => location.reload(), 1500);
-                } else {
-                    toastr.error(data.message);
-                }
-            })
-            .catch(error => {
-                toastr.error('Error updating product: ' + error.message);
-            });
-        }
-
         function deleteProduct(productId) {
             if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
                 return;

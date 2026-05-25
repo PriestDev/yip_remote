@@ -117,45 +117,7 @@
         }
 
         function editProduct(productId) {
-            const newName = prompt('Enter new product name:');
-            if (!newName) return;
-
-            const newPrice = prompt('Enter new price:');
-            if (!newPrice || isNaN(newPrice) || newPrice <= 0) {
-                toastr.error('Invalid price');
-                return;
-            }
-
-            const newStock = prompt('Enter new stock quantity:');
-            if (!newStock || isNaN(newStock) || newStock < 0) {
-                toastr.error('Invalid stock quantity');
-                return;
-            }
-
-            const newCategory = prompt('Enter new category:');
-
-            const formData = new FormData();
-            formData.append('name', newName);
-            formData.append('price', newPrice);
-            formData.append('stock', newStock);
-            formData.append('category', newCategory);
-
-            fetch('{$base_url}/admin/products/' + productId + '/update', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    toastr.success(data.message);
-                    setTimeout(() => location.reload(), 1500);
-                } else {
-                    toastr.error(data.message);
-                }
-            })
-            .catch(error => {
-                toastr.error('Error updating product: ' + error.message);
-            });
+            window.location.href = '{$base_url}/admin/products/' + productId + '/edit';
         }
 
         function deleteProduct(productId) {

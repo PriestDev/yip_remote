@@ -88,6 +88,49 @@ class ProductController extends Controller
         return $smarty->fetch('admin/product-detail.tpl');
     }
 
+    public function editForm(int $id): string
+    {
+        // Check authentication
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            header('Location: ' . $baseUrl . '/login');
+            exit;
+        }
+
+        $smarty = SmartyServiceProvider::getSmarty();
+
+        try {
+            $product = Product::find($id);
+
+            if (!$product) {
+                http_response_code(404);
+                $smarty->assign('error', 'Product not found');
+                return $smarty->fetch('admin/product-edit.tpl');
+            }
+
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            $smarty->assign('base_url', $baseUrl);
+            $smarty->assign('user_name', $_SESSION['user_name']);
+            $smarty->assign('product', [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'description' => $product->getDescription(),
+                'price' => $product->getPrice(),
+                'stock' => $product->getStock(),
+                'category' => $product->getCategory(),
+                'image' => $product->getImage(),
+            ]);
+        } catch (\Exception $e) {
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            $smarty->assign('base_url', $baseUrl);
+            $smarty->assign('user_name', $_SESSION['user_name']);
+            $smarty->assign('error', 'Error loading product: ' . $e->getMessage());
+            error_log('Product edit form error: ' . $e->getMessage());
+        }
+
+        return $smarty->fetch('admin/product-edit.tpl');
+    }
+
     public function delete(int $id): void
     {
         // Check authentication
@@ -133,17 +176,25 @@ class ProductController extends Controller
         // Check authentication
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
             http_response_code(401);
-            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            if ($this->isAjaxRequest()) {
+                echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            } else {
+                $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+                header('Location: ' . $baseUrl . '/login');
+            }
             exit;
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+            if ($this->isAjaxRequest()) {
+                echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+            } else {
+                $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+                header('Location: ' . $baseUrl . '/admin/products/' . $id);
+            }
             exit;
         }
-
-        header('Content-Type: application/json');
 
         try {
             $db = DatabaseService::getInstance();
@@ -152,7 +203,12 @@ class ProductController extends Controller
             $result = $db->query("SELECT id FROM products WHERE id = ?", [$id]);
             if (empty($result)) {
                 http_response_code(404);
-                echo json_encode(['success' => false, 'message' => 'Product not found']);
+                if ($this->isAjaxRequest()) {
+                    echo json_encode(['success' => false, 'message' => 'Product not found']);
+                } else {
+                    $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+                    header('Location: ' . $baseUrl . '/admin/products');
+                }
                 exit;
             }
 
@@ -165,13 +221,25 @@ class ProductController extends Controller
 
             // Validation
             if (empty($name)) {
-                echo json_encode(['success' => false, 'message' => 'Product name is required']);
-                exit;
+                if ($this->isAjaxRequest()) {
+                    echo json_encode(['success' => false, 'message' => 'Product name is required']);
+                    exit;
+                } else {
+                    $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+                    header('Location: ' . $baseUrl . '/admin/products/' . $id . '/edit?error=name_required');
+                    exit;
+                }
             }
 
             if ($price <= 0) {
-                echo json_encode(['success' => false, 'message' => 'Price must be greater than 0']);
-                exit;
+                if ($this->isAjaxRequest()) {
+                    echo json_encode(['success' => false, 'message' => 'Price must be greater than 0']);
+                    exit;
+                } else {
+                    $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+                    header('Location: ' . $baseUrl . '/admin/products/' . $id . '/edit?error=invalid_price');
+                    exit;
+                }
             }
 
             // Update product
@@ -180,18 +248,36 @@ class ProductController extends Controller
                 [$name, $price, $stock, $category, $description, $id]
             );
 
-            echo json_encode([
-                'success' => true,
-                'message' => 'Product updated successfully'
-            ]);
+            if ($this->isAjaxRequest()) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Product updated successfully'
+                ]);
+            } else {
+                $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+                header('Location: ' . $baseUrl . '/admin/products/' . $id . '?success=1');
+            }
         } catch (\Exception $e) {
-            http_response_code(500);
-            echo json_encode([
-                'success' => false,
-                'message' => 'Error updating product: ' . $e->getMessage()
-            ]);
+            if ($this->isAjaxRequest()) {
+                header('Content-Type: application/json');
+                http_response_code(500);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Error updating product: ' . $e->getMessage()
+                ]);
+            } else {
+                $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+                header('Location: ' . $baseUrl . '/admin/products/' . $id . '/edit?error=server_error');
+            }
             error_log('Product update error: ' . $e->getMessage());
         }
         exit;
+    }
+
+    private function isAjaxRequest(): bool
+    {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+               strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 }

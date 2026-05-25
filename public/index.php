@@ -91,6 +91,25 @@ try {
     if ($path === '/' || $path === '' || $path === '/yip_remote/public/') {
         $controller = new \App\Http\Controllers\HomeController();
         echo $controller->index();
+    } elseif ($path === '/login' || $path === '/login/') {
+        $controller = new \App\Http\Controllers\AuthController();
+        echo $controller->login();
+    } elseif ($path === '/register' || $path === '/register/') {
+        $controller = new \App\Http\Controllers\AuthController();
+        echo $controller->register();
+    } elseif ($path === '/logout' || $path === '/logout/') {
+        $controller = new \App\Http\Controllers\AuthController();
+        echo $controller->logout();
+    } elseif ($path === '/admin/dashboard' || $path === '/admin/dashboard/') {
+        $controller = new \App\Http\Controllers\Admin\DashboardController();
+        echo $controller->index();
+    } elseif ($path === '/admin/orders' || $path === '/admin/orders/') {
+        $controller = new \App\Http\Controllers\Admin\OrderController();
+        echo $controller->index();
+    } elseif (preg_match('#^/admin/orders/(\d+)(?:/)?$#', $path, $matches)) {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\Admin\OrderController();
+        echo $controller->show($id);
     } elseif ($path === '/cart' || $path === '/cart/') {
         $controller = new \App\Http\Controllers\HomeController();
         echo $controller->cart();

@@ -154,4 +154,47 @@ class CheckoutController extends Controller
         }
         exit;
     }
-}
+
+    public function show(int $id): string
+    {
+        // User must be logged in
+        if (!isset($_SESSION['user_id'])) {
+            throw new Exception('User not logged in');
+        }
+
+        $order = Order::find($id);
+        if (!$order) {
+            throw new Exception('Order not found');
+        }
+
+        // Only show order to the user who placed it
+        if ($order->getUserId() !== $_SESSION['user_id']) {
+            throw new Exception('You do not have permission to view this order');
+        }
+
+        // Fetch order items
+        $database = \App\Providers\DatabaseServiceProvider::getDatabase();
+        $stmt = $database->prepare(
+            'SELECT oi.*, p.name FROM order_items oi 
+             JOIN products p ON oi.product_id = p.id 
+             WHERE oi.order_id = ?'
+        );
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+
+        $smarty = \App\Providers\SmartyServiceProvider::getSmarty();
+        $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+        
+        $smarty->assign('base_url', $baseUrl);
+        $smarty->assign('order', $order);
+        $smarty->assign('items', $items);
+        $smarty->assign('user_id', $_SESSION['user_id']);
+        
+        return $smarty->fetch('order-confirmation.tpl');
+    }

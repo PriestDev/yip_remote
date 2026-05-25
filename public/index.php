@@ -178,6 +178,10 @@ try {
     } elseif ($path === '/api/checkout/store' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller = new \App\Http\Controllers\CheckoutController();
         $controller->store();
+    } elseif (preg_match('#^/order/(\d+)(?:/)?$#', $path, $matches)) {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\CheckoutController();
+        echo $controller->show($id);
     } elseif ($path === '/api/cart/add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller = new \App\Http\Controllers\CartController();
         $controller->add();

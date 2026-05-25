@@ -124,4 +124,48 @@ class HomeController extends Controller
         $smarty->assign('product', $product);
         return $smarty->fetch('product.tpl');
     }
+
+    public function cart(): string
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $smarty = SmartyServiceProvider::getSmarty();
+
+        // Product database for cart display
+        $allProducts = [
+            1 => ['name' => 'Fresh Apples', 'price' => 4.99],
+            2 => ['name' => 'Organic Bananas', 'price' => 3.49],
+            3 => ['name' => 'Sweet Oranges', 'price' => 5.99],
+            4 => ['name' => 'Juicy Strawberries', 'price' => 6.49],
+            5 => ['name' => 'Ripe Mangoes', 'price' => 7.99],
+            6 => ['name' => 'Fresh Grapes', 'price' => 5.49],
+        ];
+
+        // Get cart items from session
+        $cart = $_SESSION['cart'] ?? [];
+        $cartItems = [];
+        $total = 0;
+
+        foreach ($cart as $id => $quantity) {
+            if (isset($allProducts[$id])) {
+                $item = $allProducts[$id];
+                $subtotal = $item['price'] * $quantity;
+                $cartItems[] = [
+                    'id' => $id,
+                    'name' => $item['name'],
+                    'price' => number_format($item['price'], 2),
+                    'quantity' => $quantity,
+                    'subtotal' => number_format($subtotal, 2)
+                ];
+                $total += $subtotal;
+            }
+        }
+
+        $smarty->assign('cartItems', $cartItems);
+        $smarty->assign('total', number_format($total, 2));
+        $smarty->assign('itemCount', count($cartItems));
+        return $smarty->fetch('cart.tpl');
+    }
 }

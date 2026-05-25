@@ -37,7 +37,7 @@
                     <h4>{$product.name}</h4>
                     <p class="price">${$product.price}</p>
                     <a href="/yip_remote/public/product/{$product.id}" class="btn-product-link">View Details</a>
-                    <button class="btn-add-cart" onclick="addToCart({$product.id})">Add to Cart</button>
+                    <button class="btn-add-cart" onclick="addToCart({$product.id}, '{$product.name}')">Add to Cart</button>
                 </div>
                 {/foreach}
             </div>
@@ -49,8 +49,26 @@
     </footer>
 
     <script>
-        function addToCart(productId) {
-            alert('Product ' + productId + ' added to cart!');
+        function addToCart(productId, productName) {
+            fetch('/yip_remote/public/api/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({literal}{ {id: productId}{/literal})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(productName + ' added to cart!');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add item to cart');
+            });
         }
     </script>
 </body>

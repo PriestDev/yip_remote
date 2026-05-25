@@ -81,11 +81,50 @@ if (strpos($path, $basePath) === 0) {
 }
 $path = $path ?: '/';
 
+// Start session for cart functionality
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Simple router
 try {
     if ($path === '/' || $path === '' || $path === '/yip_remote/public/') {
         $controller = new \App\Http\Controllers\HomeController();
         echo $controller->index();
+    } elseif ($path === '/cart' || $path === '/cart/') {
+        $controller = new \App\Http\Controllers\HomeController();
+        echo $controller->cart();
+    } elseif ($path === '/api/cart/add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Handle adding to cart
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+        $id = isset($data['id']) ? (int)$data['id'] : 0;
+        
+        if ($id > 0) {
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
+            $_SESSION['cart'][$id] = ($_SESSION['cart'][$id] ?? 0) + 1;
+            echo json_encode(['success' => true, 'message' => 'Item added to cart']);
+        } else {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Invalid product ID']);
+        }
+        exit;
+    } elseif ($path === '/api/cart/remove' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Handle removing from cart
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+        $id = isset($data['id']) ? (int)$data['id'] : 0;
+        
+        if ($id > 0 && isset($_SESSION['cart'][$id])) {
+            unset($_SESSION['cart'][$id]);
+            echo json_encode(['success' => true, 'message' => 'Item removed from cart']);
+        } else {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Item not in cart']);
+        }
+        exit;
     } elseif (preg_match('#^/product/(\d+)(?:/)?(?:\?.*)?$#', $path, $matches)) {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\HomeController();

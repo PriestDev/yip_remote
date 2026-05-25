@@ -91,21 +91,93 @@
     <script src="{$base_url}/js/admin.js"></script>
     <script>
         function addProduct() {
-            toastr.info('Add product feature coming soon');
+            const productName = prompt('Enter product name:');
+            if (!productName) return;
+
+            const price = prompt('Enter price:');
+            if (!price || isNaN(price) || price <= 0) {
+                toastr.error('Invalid price');
+                return;
+            }
+
+            const stock = prompt('Enter stock quantity:');
+            if (!stock || isNaN(stock) || stock < 0) {
+                toastr.error('Invalid stock quantity');
+                return;
+            }
+
+            const category = prompt('Enter category:');
+            
+            // Show a simple message since full form not implemented
+            toastr.info('Add product feature - please use database directly for now. Product: ' + productName);
         }
 
         function viewProduct(productId) {
-            toastr.info('View product ' + productId + ' - Feature coming soon');
+            window.location.href = '{$base_url}/admin/products/' + productId;
         }
 
         function editProduct(productId) {
-            toastr.info('Edit product ' + productId + ' - Feature coming soon');
+            const newName = prompt('Enter new product name:');
+            if (!newName) return;
+
+            const newPrice = prompt('Enter new price:');
+            if (!newPrice || isNaN(newPrice) || newPrice <= 0) {
+                toastr.error('Invalid price');
+                return;
+            }
+
+            const newStock = prompt('Enter new stock quantity:');
+            if (!newStock || isNaN(newStock) || newStock < 0) {
+                toastr.error('Invalid stock quantity');
+                return;
+            }
+
+            const newCategory = prompt('Enter new category:');
+
+            const formData = new FormData();
+            formData.append('name', newName);
+            formData.append('price', newPrice);
+            formData.append('stock', newStock);
+            formData.append('category', newCategory);
+
+            fetch('{$base_url}/admin/products/' + productId + '/update', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(data.message);
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    toastr.error(data.message);
+                }
+            })
+            .catch(error => {
+                toastr.error('Error updating product: ' + error.message);
+            });
         }
 
         function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                toastr.warning('Delete product ' + productId + ' - Feature coming soon');
+            if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+                return;
             }
+
+            fetch('{$base_url}/admin/products/' + productId + '/delete', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(data.message);
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    toastr.error(data.message);
+                }
+            })
+            .catch(error => {
+                toastr.error('Error deleting product: ' + error.message);
+            });
         }
     </script>
 {/block}

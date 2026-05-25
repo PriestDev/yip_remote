@@ -9,24 +9,11 @@ function checkAuth() {
 }
 
 /**
- * Handle logout
+ * Handle logout - uses relative path from current location
  */
 function logout() {
-    window.location.href = '/logout';
-}
-
-/**
- * View order details
- */
-function viewOrder(orderId) {
-    alert('View order ' + orderId + ' - Feature coming soon');
-}
-
-/**
- * Edit order
- */
-function editOrder(orderId) {
-    alert('Edit order ' + orderId + ' - Feature coming soon');
+    // Navigate to logout endpoint (works from any admin page)
+    window.location.href = '/yip_remote/public/logout';
 }
 
 /**

@@ -40,6 +40,8 @@ class DashboardController extends Controller
             $pending_result = $db->query("SELECT COUNT(*) as count FROM orders WHERE status = 'pending'");
             $pending_orders = $pending_result[0]['count'] ?? 0;
 
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            $smarty->assign('base_url', $baseUrl);
             $smarty->assign('user_name', $_SESSION['user_name']);
             $smarty->assign('total_orders', $total_orders);
             $smarty->assign('total_revenue', number_format($total_revenue, 2));

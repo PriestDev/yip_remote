@@ -129,6 +129,10 @@ try {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\Admin\OrderController();
         echo $controller->show($id);
+    } elseif (preg_match('#^/admin/orders/(\d+)/update(?:/)?$#', $path, $matches) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\Admin\OrderController();
+        $controller->update($id);
     } elseif ($path === '/admin/products' || $path === '/admin/products/') {
         $controller = new \App\Http\Controllers\Admin\ProductController();
         echo $controller->index();
@@ -136,6 +140,14 @@ try {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\Admin\ProductController();
         echo $controller->show($id);
+    } elseif (preg_match('#^/admin/products/(\d+)/delete(?:/)?$#', $path, $matches) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\Admin\ProductController();
+        $controller->delete($id);
+    } elseif (preg_match('#^/admin/products/(\d+)/update(?:/)?$#', $path, $matches) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\Admin\ProductController();
+        $controller->update($id);
     } elseif ($path === '/admin/users' || $path === '/admin/users/') {
         $controller = new \App\Http\Controllers\Admin\UserController();
         echo $controller->index();
@@ -143,6 +155,10 @@ try {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\Admin\UserController();
         echo $controller->show($id);
+    } elseif (preg_match('#^/admin/users/(\d+)/delete(?:/)?$#', $path, $matches) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\Admin\UserController();
+        $controller->delete($id);
     } elseif ($path === '/admin/settings' || $path === '/admin/settings/') {
         $controller = new \App\Http\Controllers\Admin\SettingsController();
         echo $controller->index();

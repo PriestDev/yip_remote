@@ -72,4 +72,48 @@
 
 {block name="extra_scripts"}
     <script src="{$base_url}/js/admin.js"></script>
+    <script>
+        /**
+         * View order details
+         */
+        function viewOrder(orderId) {
+            window.location.href = '{$base_url}/admin/orders/' + orderId;
+        }
+
+        /**
+         * Edit order - change status
+         */
+        function editOrder(orderId) {
+            const statuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+            const statusList = statuses.join(' / ');
+            const newStatus = prompt('Enter new order status (' + statusList + '):', 'pending');
+            
+            if (!newStatus) return;
+            
+            if (!statuses.includes(newStatus.toLowerCase())) {
+                toastr.error('Invalid status. Valid options: ' + statusList);
+                return;
+            }
+
+            fetch('{$base_url}/admin/orders/' + orderId + '/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'status=' + encodeURIComponent(newStatus)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(data.message);
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    toastr.error(data.message);
+                }
+            })
+            .catch(error => {
+                toastr.error('Error updating order: ' + error.message);
+            });
+        }
+    </script>
 {/block}

@@ -85,21 +85,58 @@
     <script src="{$base_url}/js/admin.js"></script>
     <script>
         function addUser() {
-            toastr.info('Add user feature coming soon');
+            const email = prompt('Enter user email:');
+            if (!email) return;
+
+            const password = prompt('Enter password (min 6 characters):');
+            if (!password || password.length < 6) {
+                toastr.error('Password must be at least 6 characters');
+                return;
+            }
+
+            const name = prompt('Enter user name:');
+            if (!name) return;
+
+            const role = prompt('Enter role (user/admin):', 'user');
+            if (!role || (role !== 'user' && role !== 'admin')) {
+                toastr.error('Role must be "user" or "admin"');
+                return;
+            }
+
+            toastr.info('Add user feature - please use registration page or database directly');
         }
 
         function viewUser(userId) {
-            toastr.info('View user ' + userId + ' - Feature coming soon');
+            window.location.href = '{$base_url}/admin/users/' + userId;
         }
 
         function editUser(userId) {
-            toastr.info('Edit user ' + userId + ' - Feature coming soon');
+            const newName = prompt('Enter new user name:');
+            if (!newName) return;
+
+            toastr.info('Edit user feature coming soon. Name: ' + newName);
         }
 
         function deleteUser(userId) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                toastr.warning('Delete user ' + userId + ' - Feature coming soon');
+            if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                return;
             }
+
+            fetch('{$base_url}/admin/users/' + userId + '/delete', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(data.message);
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    toastr.error(data.message);
+                }
+            })
+            .catch(error => {
+                toastr.error('Error deleting user: ' + error.message);
+            });
         }
     </script>
 {/block}

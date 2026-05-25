@@ -42,6 +42,8 @@ class SettingsController extends Controller
                 'database' => 'MySQL',
             ];
 
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            $smarty->assign('base_url', $baseUrl);
             $smarty->assign('user_name', $_SESSION['user_name']);
             $smarty->assign('stats', $stats);
             $smarty->assign('system_info', $systemInfo);

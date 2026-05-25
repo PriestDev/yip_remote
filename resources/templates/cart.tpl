@@ -135,7 +135,7 @@
                 <div class="cart-total">
                     Total: ${$total}
                 </div>
-                <button class="btn-checkout">Proceed to Checkout</button>
+                <button class="btn-checkout" onclick="proceedToCheckout()">Proceed to Checkout</button>
                 <a href="{$base_url}/" class="btn-continue">Continue Shopping</a>
             </div>
         {else}
@@ -146,4 +146,16 @@
             </div>
         {/if}
     </div>
+{/block}
+
+{block name="extra_scripts"}
+    <script>
+        const baseUrl = '{$base_url}';
+        
+{literal}
+        function proceedToCheckout() {
+            window.location.href = baseUrl + '/checkout';
+        }
+{/literal}
+    </script>
 {/block}

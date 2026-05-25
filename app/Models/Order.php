@@ -36,6 +36,14 @@ class Order
     public function getItems(): ?array { return $this->items; }
     public function getCustomerName(): ?string { return $this->customer_name; }
 
+    public function setUserId(?int $user_id): void { $this->user_id = $user_id; }
+    public function setOrderNumber(?string $order_number): void { $this->order_number = $order_number; }
+    public function setTotal(?float $total): void { $this->total = $total; }
+    public function setStatus(?string $status): void { $this->status = $status; }
+    public function setCreatedAt(?string $created_at): void { $this->created_at = $created_at; }
+    public function setItems(?array $items): void { $this->items = $items; }
+    public function setCustomerName(?string $customer_name): void { $this->customer_name = $customer_name; }
+
     public static function all(): array
     {
         try {

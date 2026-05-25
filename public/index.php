@@ -172,6 +172,12 @@ try {
     } elseif ($path === '/cart' || $path === '/cart/') {
         $controller = new \App\Http\Controllers\HomeController();
         echo $controller->cart();
+    } elseif ($path === '/checkout' || $path === '/checkout/') {
+        $controller = new \App\Http\Controllers\CheckoutController();
+        echo $controller->index();
+    } elseif ($path === '/api/checkout/store' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller = new \App\Http\Controllers\CheckoutController();
+        $controller->store();
     } elseif ($path === '/api/cart/add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller = new \App\Http\Controllers\CartController();
         $controller->add();

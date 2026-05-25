@@ -40,10 +40,14 @@ class AuthController extends Controller
             $_SESSION['user_email'] = $user->getEmail();
             $_SESSION['user_role'] = $user->getRole();
 
+            // Calculate base URL dynamically
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            $redirect = $user->getRole() === 'admin' ? $baseUrl . '/admin/dashboard' : $baseUrl . '/';
+
             echo json_encode([
                 'success' => true,
                 'message' => 'Login successful',
-                'redirect' => $user->getRole() === 'admin' ? '/yip_remote/public/admin/dashboard' : '/yip_remote/public/'
+                'redirect' => $redirect
             ]);
         } else {
             http_response_code(401);
@@ -110,10 +114,12 @@ class AuthController extends Controller
         $user = new User(null, $name, $email, $hashedPassword, 'user');
 
         if ($user->save()) {
+            // Calculate base URL dynamically
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
             echo json_encode([
                 'success' => true,
                 'message' => 'Registration successful. Please login.',
-                'redirect' => '/yip_remote/public/login'
+                'redirect' => $baseUrl . '/login'
             ]);
         } else {
             http_response_code(500);
@@ -125,7 +131,8 @@ class AuthController extends Controller
     public function logout(): void
     {
         session_destroy();
-        header('Location: /');
+        $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+        header('Location: ' . $baseUrl . '/');
         exit;
     }
 }

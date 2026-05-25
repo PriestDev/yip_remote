@@ -13,7 +13,8 @@ class OrderController extends Controller
     {
         // Check authentication
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-            header('Location: /yip_remote/public/login');
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            header('Location: ' . $baseUrl . '/login');
             exit;
         }
 

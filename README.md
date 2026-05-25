@@ -1,6 +1,8 @@
 # Laravel E-Commerce with Smarty Integration
 
-A basic e-commerce platform built with Laravel and integrated with Smarty template engine.
+**⚠️ Test Assessment Project**
+
+A basic e-commerce platform built with Laravel and integrated with Smarty template engine. This is a test assessment/learning project.
 
 ## Features
 

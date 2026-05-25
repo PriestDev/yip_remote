@@ -13,38 +13,23 @@ class SmartyServiceProvider
         if (self::$smarty === null) {
             self::$smarty = new Smarty();
             
-            $config = config('smarty');
+            $config = require __DIR__ . '/../../config/smarty.php';
             
+            // Set directories
             self::$smarty->setTemplateDir($config['template_dir']);
             self::$smarty->setCompileDir($config['compile_dir']);
-            self::$smarty->setCacheDir($config['compile_dir'] . '/cache');
-            self::$smarty->setDebug($config['debug']);
-            self::$smarty->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
-            self::$smarty->setCacheLifetime($config['cache_lifetime']);
+            self::$smarty->setCacheDir($config['cache_dir']);
+            self::$smarty->setPluginsDir($config['plugins_dir']);
+            
+            // Set delimiters
+            self::$smarty->setLeftDelimiter($config['left_delimiter']);
+            self::$smarty->setRightDelimiter($config['right_delimiter']);
+            
+            // Set caching
+            self::$smarty->setCaching($config['caching']);
         }
 
         return self::$smarty;
     }
-
-    public static function register()
-    {
-        // Service provider registration logic
-    }
 }
 
-function config($key)
-{
-    $parts = explode('.', $key);
-    $config = require __DIR__ . '/../config/' . $parts[0] . '.php';
-    
-    if (isset($parts[1])) {
-        return $config[$parts[1]] ?? null;
-    }
-    
-    return $config;
-}
-
-function resource_path($path = '')
-{
-    return __DIR__ . '/../../resources' . ($path ? '/' . $path : '');
-}

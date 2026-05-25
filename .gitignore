@@ -5,6 +5,8 @@
 node_modules/
 /resources/templates_c/*
 !/resources/templates_c/.gitkeep
+/resources/templates_c/cache/*
+!/resources/templates_c/cache/.gitkeep
 .DS_Store
 Thumbs.db
 *.log

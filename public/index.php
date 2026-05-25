@@ -6,26 +6,99 @@ define('LARAVEL_START', microtime(true));
 
 /*
 |--------------------------------------------------------------------------
+| Define Application Paths
+|--------------------------------------------------------------------------
+*/
+
+define('BASE_PATH', __DIR__ . '/..');
+define('APP_PATH', BASE_PATH . '/app');
+define('RESOURCES_PATH', BASE_PATH . '/resources');
+
+/*
+|--------------------------------------------------------------------------
 | Register The Auto Loader
 |--------------------------------------------------------------------------
 */
 
-require __DIR__ . '/../vendor/autoload.php';
+require BASE_PATH . '/vendor/autoload.php';
+
+// Manually include Smarty if autoloader fails
+if (!class_exists('Smarty')) {
+    require BASE_PATH . '/vendor/smarty/smarty/libs/Smarty.class.php';
+}
 
 /*
 |--------------------------------------------------------------------------
-| Bootstrap Laravel And Handle The Request
+| Load Environment Variables
 |--------------------------------------------------------------------------
 */
 
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+$_ENV = [];
 
-$kernel = $app->make(\Illuminate\Contracts\Http\Kernel::class);
+$envFile = BASE_PATH . '/.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value, '\'"');
+            $_ENV[$key] = $value;
+            putenv("$key=$value");
+        }
+    }
+}
 
-$response = $kernel->handle(
-    $request = \Illuminate\Http\Request::capture()
-);
+/*
+|--------------------------------------------------------------------------
+| Define Helper Functions
+|--------------------------------------------------------------------------
+*/
 
-$response->send();
+function env($key, $default = null) {
+    return $_ENV[$key] ?? $default;
+}
 
-$kernel->terminate($request, $response);
+function resource_path($path = '') {
+    return RESOURCES_PATH . ($path ? '/' . ltrim($path, '/') : '');
+}
+
+function public_path($path = '') {
+    return __DIR__ . ($path ? '/' . ltrim($path, '/') : '');
+}
+
+/*
+|--------------------------------------------------------------------------
+| Route The Request
+|--------------------------------------------------------------------------
+*/
+
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+// Remove base path if it exists
+$basePath = '/yip_remote/public';
+if (strpos($path, $basePath) === 0) {
+    $path = substr($path, strlen($basePath));
+}
+$path = $path ?: '/';
+
+// Simple router
+try {
+    if ($path === '/' || $path === '') {
+        $controller = new \App\Http\Controllers\HomeController();
+        echo $controller->index();
+    } elseif (preg_match('#^/product/(\d+)#', $path, $matches)) {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\HomeController();
+        echo $controller->show($id);
+    } else {
+        http_response_code(404);
+        echo '<h1>404 - Page Not Found</h1>';
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    echo '<pre>';
+    echo htmlspecialchars($e->getMessage());
+    echo '</pre>';
+}
+
+

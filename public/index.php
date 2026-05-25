@@ -129,6 +129,23 @@ try {
         $id = (int)$matches[1];
         $controller = new \App\Http\Controllers\Admin\OrderController();
         echo $controller->show($id);
+    } elseif ($path === '/admin/products' || $path === '/admin/products/') {
+        $controller = new \App\Http\Controllers\Admin\ProductController();
+        echo $controller->index();
+    } elseif (preg_match('#^/admin/products/(\d+)(?:/)?$#', $path, $matches)) {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\Admin\ProductController();
+        echo $controller->show($id);
+    } elseif ($path === '/admin/users' || $path === '/admin/users/') {
+        $controller = new \App\Http\Controllers\Admin\UserController();
+        echo $controller->index();
+    } elseif (preg_match('#^/admin/users/(\d+)(?:/)?$#', $path, $matches)) {
+        $id = (int)$matches[1];
+        $controller = new \App\Http\Controllers\Admin\UserController();
+        echo $controller->show($id);
+    } elseif ($path === '/admin/settings' || $path === '/admin/settings/') {
+        $controller = new \App\Http\Controllers\Admin\SettingsController();
+        echo $controller->index();
     } elseif ($path === '/cart' || $path === '/cart/') {
         $controller = new \App\Http\Controllers\HomeController();
         echo $controller->cart();

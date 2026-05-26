@@ -6,15 +6,15 @@ use PDO;
 
 class DatabaseService
 {
-    private static $instance = null;
-    private $connection;
+    private static ?DatabaseService $instance = null;
+    private ?PDO $connection = null;
 
     private function __construct()
     {
         $this->connect();
     }
 
-    public static function getInstance()
+    public static function getInstance(): DatabaseService
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -22,7 +22,7 @@ class DatabaseService
         return self::$instance;
     }
 
-    private function connect()
+    private function connect(): void
     {
         try {
             $dsn = sprintf(
@@ -43,12 +43,12 @@ class DatabaseService
         }
     }
 
-    public function getConnection()
+    public function getConnection(): ?PDO
     {
         return $this->connection;
     }
 
-    public function query($sql, $params = [])
+    public function query(string $sql, array $params = []): array
     {
         try {
             $stmt = $this->connection->prepare($sql);
@@ -59,7 +59,7 @@ class DatabaseService
         }
     }
 
-    public function execute($sql, $params = [])
+    public function execute(string $sql, array $params = []): bool
     {
         try {
             $stmt = $this->connection->prepare($sql);
@@ -69,7 +69,7 @@ class DatabaseService
         }
     }
 
-    public function lastInsertId()
+    public function lastInsertId(): string|false
     {
         return $this->connection->lastInsertId();
     }

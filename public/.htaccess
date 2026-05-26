@@ -1,6 +1,8 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /
+    # RewriteBase must be set to the relative path from DocumentRoot to this directory
+    # For portability, update this if you rename the folder (e.g., /new_folder_name/public/)
+    RewriteBase /yip_remote/public/
 
     RewriteRule ^index\.html$ - [L]
     RewriteCond %{REQUEST_FILENAME} !-f

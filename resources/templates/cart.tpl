@@ -150,8 +150,6 @@
 
 {block name="extra_scripts"}
     <script>
-        const baseUrl = '{$base_url}';
-        
 {literal}
         function proceedToCheckout() {
             window.location.href = baseUrl + '/checkout';

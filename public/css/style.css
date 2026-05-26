@@ -264,6 +264,17 @@ footer {
     margin-top: 3rem;
 }
 
+footer a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
 /* Responsive Design */
 /* Large Screens (1200px+) */
 @media (min-width: 1200px) {

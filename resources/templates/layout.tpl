@@ -29,7 +29,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 E-Commerce Store by Priest(Francis). All rights reserved.</p>
+        <p>&copy; 2026 E-Commerce Store by Priest(Francis). All rights reserved. | <a href="https://github.com/PriestDev/yip_remote" target="_blank" rel="noopener noreferrer">View on GitHub</a></p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -80,7 +80,7 @@
 
                 <div class="confirmation-actions">
                     <a href="{$base_url}/" class="btn-continue-shopping">Continue Shopping</a>
-                    <a href="{$base_url}/account" class="btn-view-orders">View My Orders</a>
+                    <a href="javascript:void(0);" onclick="showComingSoon()" class="btn-view-orders">View My Orders</a>
                 </div>
             </div>
 
@@ -99,9 +99,16 @@
 
 {block name="extra_scripts"}
     <script>
+        {literal}
+        // Show coming soon alert
+        function showComingSoon() {
+            toastr.info('This feature is coming soon!');
+        }
+
         // Print order confirmation if requested
         function printOrder() {
             window.print();
         }
+        {/literal}
     </script>
 {/block}

@@ -104,8 +104,6 @@
 
 {block name="extra_scripts"}
     <script>
-        const baseUrl = '{$base_url}';
-        
 {literal}
         function placeOrder() {
             // Validate form

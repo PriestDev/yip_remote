@@ -86,9 +86,12 @@ try {
 |--------------------------------------------------------------------------
 */
 
+// Get dynamic base path from SCRIPT_NAME
+$basePath = dirname($_SERVER['SCRIPT_NAME']);
+
+// Get the request path
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 // Remove base path if it exists
-$basePath = '/yip_remote/public';
 if (strpos($path, $basePath) === 0) {
     $path = substr($path, strlen($basePath));
 }
@@ -101,7 +104,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Simple router
 try {
-    if ($path === '/' || $path === '' || $path === '/yip_remote/public/') {
+    if ($path === '/' || $path === '' || $path === $basePath . '/') {
         $controller = new \App\Http\Controllers\HomeController();
         echo $controller->index();
     } elseif ($path === '/login' || $path === '/login/') {
@@ -202,7 +205,8 @@ try {
     } elseif ($path === '/logout' || $path === '/logout/') {
         session_start();
         session_destroy();
-        header('Location: /yip_remote/public/');
+        $basePath = dirname($_SERVER['SCRIPT_NAME']);
+        header('Location: ' . $basePath . '/');
         exit;
     } elseif (preg_match('#^/product/(\d+)(?:/)?(?:\?.*)?$#', $path, $matches)) {
         $id = (int)$matches[1];

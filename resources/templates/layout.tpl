@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{block name="title"}Electronics Store - Premium Tech Products{/block}</title>
-    <link rel="stylesheet" href="/yip_remote/public/css/style.css">
+    <link rel="stylesheet" href="{$base_url}/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     {block name="extra_css"}{/block}
 </head>
@@ -34,6 +34,12 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        {literal}
+        // Global variable for dynamic base URL in JavaScript
+        const baseUrl = '{/literal}{$base_url}{literal}';
+        {/literal}
+    </script>
     {block name="extra_scripts"}{/block}
 </body>
 </html>

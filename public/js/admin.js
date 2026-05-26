@@ -9,11 +9,11 @@ function checkAuth() {
 }
 
 /**
- * Handle logout - uses relative path from current location
+ * Handle logout - uses baseUrl variable set in layout
  */
 function logout() {
-    // Navigate to logout endpoint (works from any admin page)
-    window.location.href = '/yip_remote/public/logout';
+    // Navigate to logout endpoint using dynamic baseUrl
+    window.location.href = baseUrl + '/logout';
 }
 
 /**

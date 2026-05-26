@@ -13,19 +13,22 @@ class CheckoutController extends Controller
     {
         // User must be logged in
         if (!isset($_SESSION['user_id'])) {
-            header('Location: /yip_remote/public/login');
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            header('Location: ' . $baseUrl . '/login');
             exit;
         }
 
         // User cannot be admin
         if ($_SESSION['user_role'] === 'admin') {
-            header('Location: /yip_remote/public/');
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            header('Location: ' . $baseUrl . '/');
             exit;
         }
 
         // Cart must not be empty
         if (empty($_SESSION['cart'])) {
-            header('Location: /yip_remote/public/cart');
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+            header('Location: ' . $baseUrl . '/cart');
             exit;
         }
 
@@ -146,11 +149,12 @@ class CheckoutController extends Controller
             // Clear the cart
             unset($_SESSION['cart']);
 
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
             echo json_encode([
                 'success' => true,
                 'message' => 'Order placed successfully',
                 'order_id' => $orderId,
-                'redirect' => '/yip_remote/public/order/' . $orderId
+                'redirect' => $baseUrl . '/order/' . $orderId
             ]);
         } catch (Exception $e) {
             http_response_code(500);

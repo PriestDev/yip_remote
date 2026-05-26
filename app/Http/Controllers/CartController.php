@@ -10,11 +10,12 @@ class CartController extends Controller
 
         // Check if user is authenticated
         if (!isset($_SESSION['user_id'])) {
+            $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
             http_response_code(401);
             echo json_encode([
                 'success' => false,
                 'message' => 'Please sign in to add items to cart',
-                'redirect' => '/yip_remote/public/register'
+                'redirect' => $baseUrl . '/register'
             ]);
             exit;
         }

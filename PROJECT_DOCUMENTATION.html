@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YIP Remote - E-Commerce Platform Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: white;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #007bff;
+        }
+        
+        h1 {
+            color: #007bff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        
+        .meta {
+            color: #999;
+            font-size: 0.9em;
+        }
+        
+        h2 {
+            color: #007bff;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        h3 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-item {
+            padding: 12px;
+            background: #f9f9f9;
+            border-left: 4px solid #007bff;
+        }
+        
+        .feature-item strong {
+            color: #007bff;
+        }
+        
+        .requirement {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .requirement strong {
+            color: #007bff;
+        }
+        
+        .section-box {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .tech-stack {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .tech-item {
+            padding: 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .tech-item strong {
+            color: #007bff;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        table th {
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .security-feature {
+            padding: 10px 15px;
+            background: #e8f5e9;
+            margin-bottom: 8px;
+            border-left: 4px solid #4caf50;
+            border-radius: 3px;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .print-note {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                padding: 0;
+                max-width: 100%;
+            }
+            .print-note {
+                display: none;
+            }
+            a {
+                color: #007bff;
+                text-decoration: none;
+            }
+            h2, h3 {
+                page-break-after: avoid;
+            }
+            p, ul, ol {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>YIP Remote</h1>
+            <p class="subtitle">E-Commerce Platform</p>
+            <p class="meta">A fully functional e-commerce application with user authentication, shopping cart, and order management</p>
+            <p class="meta" style="margin-top: 10px;"><strong>Version 1.0.0 | PHP 8.2+ | MySQL 5.7+ | May 26, 2026</strong></p>
+        </header>
+        
+        <div class="print-note">
+            <strong>📄 To save as PDF:</strong> Use your browser's Print function (Ctrl+P or Cmd+P) and select "Save as PDF"
+        </div>
+        
+        <h2>Project Overview</h2>
+        <p>YIP Remote is a production-ready e-commerce platform demonstrating modern web development practices. It features a clean MVC architecture, secure user authentication, shopping cart functionality, and complete order management with database persistence.</p>
+        
+        <p><strong>GitHub Repository:</strong> <a href="https://github.com/PriestDev/yip_remote" target="_blank">https://github.com/PriestDev/yip_remote</a></p>
+        
+        <h2>Core Features</h2>
+        <div class="feature-list">
+            <div class="feature-item"><strong>✓ User Authentication</strong> - Secure registration and login with bcrypt</div>
+            <div class="feature-item"><strong>✓ Product Catalog</strong> - Browse and view detailed product pages</div>
+            <div class="feature-item"><strong>✓ Shopping Cart</strong> - Add/remove items with persistent sessions</div>
+            <div class="feature-item"><strong>✓ Quantity Modal</strong> - User-friendly quantity selection interface</div>
+            <div class="feature-item"><strong>✓ Checkout System</strong> - Multi-step checkout with shipping info</div>
+            <div class="feature-item"><strong>✓ Order Management</strong> - Complete order creation and tracking</div>
+            <div class="feature-item"><strong>✓ Inventory System</strong> - Automatic stock decrement on purchase</div>
+            <div class="feature-item"><strong>✓ Order Confirmation</strong> - Professional confirmation pages</div>
+            <div class="feature-item"><strong>✓ Role-Based Access</strong> - User and admin role management</div>
+            <div class="feature-item"><strong>✓ Responsive Design</strong> - Mobile-friendly interface</div>
+        </div>
+        
+        <h2>System Requirements</h2>
+        <div class="requirement"><strong>PHP:</strong> 8.2 or higher with type hints support</div>
+        <div class="requirement"><strong>MySQL:</strong> 5.7 or higher with InnoDB support</div>
+        <div class="requirement"><strong>Apache:</strong> With mod_rewrite enabled (included in XAMPP)</div>
+        <div class="requirement"><strong>Composer:</strong> For PHP dependency management</div>
+        
+        <h2>Installation Guide</h2>
+        
+        <h3>Step 1: Clone Repository</h3>
+        <pre>cd c:\xampp\htdocs
+git clone https://github.com/PriestDev/yip_remote.git
+cd yip_remote</pre>
+        
+        <h3>Step 2: Install Dependencies</h3>
+        <pre>composer install</pre>
+        
+        <h3>Step 3: Create Environment File</h3>
+        <p>Create <code>.env</code> in project root:</p>
+        <pre>DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ecommerce_db
+DB_USERNAME=root
+DB_PASSWORD=</pre>
+        
+        <h3>Step 4: Database Setup</h3>
+        <p>Execute the following SQL in phpMyAdmin or MySQL CLI:</p>
+        <pre>CREATE DATABASE ecommerce_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ecommerce_db;
+
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  role ENUM('user', 'admin') DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE products (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  category VARCHAR(100),
+  price DECIMAL(10, 2) NOT NULL,
+  stock INT DEFAULT 0,
+  image VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE orders (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  order_number VARCHAR(50) UNIQUE NOT NULL,
+  total DECIMAL(10, 2) NOT NULL,
+  status ENUM('pending', 'processing', 'completed') DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE order_items (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  order_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (product_id) REFERENCES products(id)
+);</pre>
+        
+        <h3>Step 5: Start Application</h3>
+        <p>Start Apache and MySQL in XAMPP, then navigate to:</p>
+        <pre>http://localhost/yip_remote/public/</pre>
+        
+        <h2>Project Structure</h2>
+        <pre>yip_remote/
+├── app/
+│   ├── Http/Controllers/          # Application controllers
+│   ├── Models/                    # Data models
+│   ├── Services/DatabaseService.php
+│   ├── Providers/                 # Service providers
+│   └── Exceptions/
+├── public/
+│   ├── index.php                  # Router entry point
+│   ├── .htaccess                  # URL rewriting
+│   ├── css/style.css              # Responsive styles
+│   └── js/                        # JavaScript files
+├── resources/
+│   ├── templates/                 # Smarty templates
+│   └── templates_c/               # Compiled templates
+├── config/                        # Configuration files
+├── .env                           # Environment variables
+├── composer.json                  # PHP dependencies
+└── README.md                      # Project documentation</pre>
+        
+        <h2>API Routes</h2>
+        
+        <h3>Public Routes</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>/</td>
+                    <td>Home page with products</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/product/{id}</td>
+                    <td>Product detail page</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/login</td>
+                    <td>Login page</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/auth/login</td>
+                    <td>Process login</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/register</td>
+                    <td>Registration page</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/auth/register</td>
+                    <td>Process registration</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/cart</td>
+                    <td>View shopping cart</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/checkout</td>
+                    <td>Checkout page (authenticated)</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/api/cart/add</td>
+                    <td>Add item to cart</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/api/checkout/store</td>
+                    <td>Place order</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/order/{id}</td>
+                    <td>View order confirmation</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/logout</td>
+                    <td>Logout and destroy session</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Admin Routes</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>/admin/dashboard</td>
+                    <td>Admin dashboard</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/admin/products</td>
+                    <td>Manage products</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/admin/orders</td>
+                    <td>Manage orders</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Technology Stack</h2>
+        <div class="tech-stack">
+            <div class="tech-item">
+                <strong>Backend</strong>
+                <p>PHP 8.2 with full type hints</p>
+            </div>
+            <div class="tech-item">
+                <strong>Database</strong>
+                <p>MySQL 5.7+ with PDO prepared statements</p>
+            </div>
+            <div class="tech-item">
+                <strong>Templating</strong>
+                <p>Smarty 4.5.6 template engine</p>
+            </div>
+            <div class="tech-item">
+                <strong>Frontend</strong>
+                <p>HTML5, CSS3, JavaScript ES6</p>
+            </div>
+            <div class="tech-item">
+                <strong>AJAX</strong>
+                <p>Fetch API for async operations</p>
+            </div>
+            <div class="tech-item">
+                <strong>UI Components</strong>
+                <p>Toastr.js for notifications</p>
+            </div>
+            <div class="tech-item">
+                <strong>Package Manager</strong>
+                <p>Composer for dependencies</p>
+            </div>
+            <div class="tech-item">
+                <strong>Version Control</strong>
+                <p>Git with GitHub integration</p>
+            </div>
+        </div>
+        
+        <h2>Security Features</h2>
+        <div class="security-feature">✓ Bcrypt password hashing (PASSWORD_BCRYPT algorithm)</div>
+        <div class="security-feature">✓ PDO prepared statements for SQL injection prevention</div>
+        <div class="security-feature">✓ Session-based authentication with role validation</div>
+        <div class="security-feature">✓ Input validation and sanitization on all forms</div>
+        <div class="security-feature">✓ Admin role-based access control (RBAC)</div>
+        <div class="security-feature">✓ HTTP-only session cookies</div>
+        <div class="security-feature">✓ Dynamic path detection for portable deployments</div>
+        
+        <h2>Testing Instructions</h2>
+        <ol>
+            <li>Start Apache and MySQL in XAMPP</li>
+            <li>Navigate to <code>http://localhost/yip_remote/public/</code></li>
+            <li>Register a new user account</li>
+            <li>Browse products from the catalog</li>
+            <li>Add items to shopping cart</li>
+            <li>Proceed to checkout and fill shipping information</li>
+            <li>Place order and view confirmation</li>
+            <li>Verify order in database via phpMyAdmin</li>
+            <li>Check inventory was decremented correctly</li>
+            <li>Test logout functionality</li>
+        </ol>
+        
+        <h2>Database Verification</h2>
+        <p>After placing an order, run these queries in phpMyAdmin to verify:</p>
+        <pre>-- Check order was created
+SELECT * FROM orders WHERE user_id = 1;
+
+-- Check order items
+SELECT oi.*, p.name FROM order_items oi
+JOIN products p ON oi.product_id = p.id
+WHERE oi.order_id = 1;
+
+-- Verify stock was decremented
+SELECT id, name, stock FROM products WHERE id = 1;</pre>
+        
+        <h2>Deployment Notes</h2>
+        
+        <h3>Portable Deployment</h3>
+        <p>The application uses dynamic path detection with <code>dirname($_SERVER['SCRIPT_NAME'])</code>, making it folder-agnostic.</p>
+        
+        <h4>To deploy to a different folder:</h4>
+        <ol>
+            <li>Rename the folder (e.g., <code>my_shop</code>)</li>
+            <li>Update <code>public/.htaccess</code> RewriteBase:
+                <pre>RewriteBase /my_shop/public/</pre>
+            </li>
+            <li>Update database configuration in <code>.env</code></li>
+            <li>Clear template cache: <code>rm -r resources/templates_c/*</code></li>
+            <li>Access at: <code>http://localhost/my_shop/public/</code></li>
+        </ol>
+        
+        <p>All other paths automatically adjust at runtime based on the folder location.</p>
+        
+        <h2>Common Issues & Solutions</h2>
+        
+        <h3>404 Errors on Routes</h3>
+        <ul>
+            <li>Verify Apache mod_rewrite is enabled</li>
+            <li>Check <code>.htaccess</code> RewriteBase matches your folder path</li>
+            <li>Clear browser cache and restart Apache</li>
+        </ul>
+        
+        <h3>Template Not Found</h3>
+        <ul>
+            <li>Clear <code>resources/templates_c/</code> directory</li>
+            <li>Verify template files exist in <code>resources/templates/</code></li>
+            <li>Check file permissions</li>
+        </ul>
+        
+        <h3>Database Connection Failed</h3>
+        <ul>
+            <li>Verify MySQL is running in XAMPP</li>
+            <li>Check <code>.env</code> credentials match your setup</li>
+            <li>Ensure <code>ecommerce_db</code> database exists</li>
+            <li>Verify user has proper permissions</li>
+        </ul>
+        
+        <h3>CSS/JS Not Loading</h3>
+        <ul>
+            <li>Check browser console for 404 errors (F12)</li>
+            <li>Verify <code>{$base_url}</code> is rendering correctly</li>
+            <li>Clear browser cache (Ctrl+Shift+Delete)</li>
+        </ul>
+        
+        <h2>Code Quality Standards</h2>
+        <ul>
+            <li>PSR-12 compliant code formatting</li>
+            <li>Full type hints on all properties and methods</li>
+            <li>Meaningful variable and function names</li>
+            <li>Inline comments for complex logic</li>
+            <li>Smarty {literal}{/literal} blocks for mixed PHP/JavaScript</li>
+            <li>Clean separation of concerns (MVC pattern)</li>
+            <li>Prepared statements for all database queries</li>
+        </ul>
+        
+        <h2>Future Enhancement Ideas</h2>
+        <ul>
+            <li>User account dashboard with order history</li>
+            <li>Real-time order tracking system</li>
+            <li>Product reviews and ratings</li>
+            <li>Wishlist functionality</li>
+            <li>Payment gateway integration (Stripe, PayPal)</li>
+            <li>Email notification system</li>
+            <li>Coupon and discount codes</li>
+            <li>Advanced product search and filtering</li>
+            <li>Category browsing with filters</li>
+            <li>Admin analytics dashboard</li>
+        </ul>
+        
+        <h2>Support & Resources</h2>
+        <ul>
+            <li><strong>GitHub Repository:</strong> <a href="https://github.com/PriestDev/yip_remote" target="_blank">https://github.com/PriestDev/yip_remote</a></li>
+            <li><strong>PHP Documentation:</strong> <a href="https://www.php.net/docs.php" target="_blank">https://www.php.net/docs.php</a></li>
+            <li><strong>MySQL Documentation:</strong> <a href="https://dev.mysql.com/doc/" target="_blank">https://dev.mysql.com/doc/</a></li>
+            <li><strong>Smarty Documentation:</strong> <a href="https://www.smarty.net/docs" target="_blank">https://www.smarty.net/docs</a></li>
+        </ul>
+        
+        <div class="footer">
+            <p><strong>YIP Remote E-Commerce Platform</strong></p>
+            <p>Version 1.0.0 | Production Ready</p>
+            <p>PHP 8.2+ | MySQL 5.7+ | Last Updated: May 26, 2026</p>
+            <p style="margin-top: 15px; color: #999;">Documentation can be printed to PDF using your browser's Print function (Ctrl+P)</p>
+        </div>
+    </div>
+</body>
+</html>

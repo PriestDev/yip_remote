@@ -47,7 +47,6 @@
     <script>
         const isAuthenticated = {if $user_id}true{else}false{/if};
         const userRole = '{if $user_role}{$user_role}{else}guest{/if}';
-        const baseUrl = '{$base_url}';
         let selectedProductId = null;
         let selectedProductName = null;
         
